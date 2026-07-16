@@ -7,7 +7,7 @@ const LINKS = [
   { n: "02", label: "Contact", href: "/contact" },
   { n: "03", label: "Events", href: "/events" },
   { n: "04", label: "Gallery", href: "/gallery" },
-  { n: "05", label: "Results", href: "/results" },
+  { n: "05", label: "News/Media", href: "/media" },
   { n: "06", label: "Services", href: "/services" },
   { n: "07", label: "Sponsors", href: "/sponsors" },
 ];
