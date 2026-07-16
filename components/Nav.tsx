@@ -34,17 +34,17 @@ export default function Nav() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/nova-logo.png" alt="Nova" />
         </a>
-      </header>
 
-      <button
-        className={`menu-fab${open ? " open" : ""}`}
-        onClick={() => setOpen((o) => !o)}
-        aria-label="Menu"
-      >
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+        <button
+          className={`menu-fab${open ? " open" : ""}`}
+          onClick={() => setOpen((o) => !o)}
+          aria-label="Menu"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </header>
 
       <nav className={`overlay${open ? " open" : ""}`} id="overlay">
         {LINKS.map((l) => (
