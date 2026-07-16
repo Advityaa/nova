@@ -382,3 +382,301 @@ export async function getOrder(orderId: string): Promise<OrderView | null> {
 
   return { ...row, items };
 }
+
+// ============================================================
+// ADMIN — writes & management queries
+// ============================================================
+
+export type AdminEvent = {
+  id: string;
+  slug: string;
+  name: string;
+  type: string;
+  color: string;
+  accent_ink: string;
+  lineup: string | null;
+  venue: string | null;
+  area: string | null;
+  address: string | null;
+  weekday: string | null;
+  starts_at: string | null;
+  doors: string | null;
+  status: string;
+  status_label: string | null;
+  hero_image: string | null;
+  description: string | null;
+  featured: boolean;
+};
+
+export type AdminEventListItem = AdminEvent & {
+  tier_count: number;
+  sold_total: number;
+};
+
+export type AdminTier = {
+  id: string;
+  event_id: string;
+  name: string;
+  description: string | null;
+  price_fen: number;
+  capacity: number | null;
+  sold: number;
+  sort: number;
+};
+
+export type EventInput = {
+  slug: string;
+  name: string;
+  type: string;
+  color: string;
+  accent_ink: string;
+  lineup: string | null;
+  venue: string | null;
+  area: string | null;
+  address: string | null;
+  weekday: string | null;
+  starts_at: string | null;
+  doors: string | null;
+  status: string;
+  status_label: string | null;
+  hero_image: string | null;
+  description: string | null;
+  featured: boolean;
+};
+
+export type TierInput = {
+  name: string;
+  description: string | null;
+  price_fen: number;
+  capacity: number | null;
+  sort: number;
+};
+
+// ---- Events ----
+export async function listEventsAdmin(): Promise<AdminEventListItem[]> {
+  const { rows } = await sql<AdminEventListItem>`
+    select e.*,
+      (select count(*) from ticket_tiers t where t.event_id = e.id)::int as tier_count,
+      (select coalesce(sum(t.sold),0) from ticket_tiers t where t.event_id = e.id)::int as sold_total
+    from events e
+    order by e.starts_at asc nulls last, e.created_at asc
+  `;
+  return rows;
+}
+
+export async function getEventByIdAdmin(
+  id: string
+): Promise<{ event: AdminEvent; tiers: AdminTier[] } | null> {
+  const { rows } = await sql<AdminEvent>`select * from events where id = ${id} limit 1`;
+  const event = rows[0];
+  if (!event) return null;
+  const { rows: tiers } = await sql<AdminTier>`
+    select * from ticket_tiers where event_id = ${id} order by sort asc, name asc
+  `;
+  return { event, tiers };
+}
+
+async function clearFeaturedIfNeeded(featured: boolean) {
+  if (featured) await sql`update events set featured = false where featured = true`;
+}
+
+export async function createEventAdmin(input: EventInput): Promise<string> {
+  await clearFeaturedIfNeeded(input.featured);
+  const { rows } = await sql<{ id: string }>`
+    insert into events (
+      slug, name, type, color, accent_ink, lineup, venue, area, address,
+      weekday, starts_at, doors, status, status_label, hero_image,
+      description, featured
+    ) values (
+      ${input.slug}, ${input.name}, ${input.type}, ${input.color}, ${input.accent_ink},
+      ${input.lineup}, ${input.venue}, ${input.area}, ${input.address}, ${input.weekday},
+      ${input.starts_at}, ${input.doors}, ${input.status}, ${input.status_label},
+      ${input.hero_image}, ${input.description}, ${input.featured}
+    )
+    returning id
+  `;
+  return rows[0].id;
+}
+
+export async function updateEventAdmin(
+  id: string,
+  input: EventInput
+): Promise<void> {
+  if (input.featured) {
+    await sql`update events set featured = false where featured = true and id <> ${id}`;
+  }
+  await sql`
+    update events set
+      slug = ${input.slug}, name = ${input.name}, type = ${input.type},
+      color = ${input.color}, accent_ink = ${input.accent_ink}, lineup = ${input.lineup},
+      venue = ${input.venue}, area = ${input.area}, address = ${input.address},
+      weekday = ${input.weekday}, starts_at = ${input.starts_at}, doors = ${input.doors},
+      status = ${input.status}, status_label = ${input.status_label},
+      hero_image = ${input.hero_image}, description = ${input.description},
+      featured = ${input.featured}
+    where id = ${id}
+  `;
+}
+
+export async function deleteEventAdmin(id: string): Promise<void> {
+  await sql`delete from events where id = ${id}`; // tiers cascade; orders keep (event_id -> null)
+}
+
+// ---- Tiers ----
+export async function addTierAdmin(
+  eventId: string,
+  input: TierInput
+): Promise<void> {
+  await sql`
+    insert into ticket_tiers (event_id, name, description, price_fen, capacity, sort)
+    values (${eventId}, ${input.name}, ${input.description}, ${input.price_fen}, ${input.capacity}, ${input.sort})
+  `;
+}
+
+export async function updateTierAdmin(
+  tierId: string,
+  input: TierInput
+): Promise<void> {
+  await sql`
+    update ticket_tiers set
+      name = ${input.name}, description = ${input.description},
+      price_fen = ${input.price_fen}, capacity = ${input.capacity}, sort = ${input.sort}
+    where id = ${tierId}
+  `;
+}
+
+export async function deleteTierAdmin(tierId: string): Promise<void> {
+  await sql`delete from ticket_tiers where id = ${tierId}`;
+}
+
+// ---- Gallery ----
+export type AdminGalleryImage = {
+  id: string;
+  url: string;
+  caption: string | null;
+  sort: number;
+};
+
+export async function listGalleryAdmin(): Promise<AdminGalleryImage[]> {
+  const { rows } = await sql<AdminGalleryImage>`
+    select id, url, caption, sort from gallery_images order by sort asc, created_at asc
+  `;
+  return rows;
+}
+
+export async function addGalleryImageAdmin(
+  url: string,
+  caption: string | null,
+  sort: number
+): Promise<void> {
+  await sql`insert into gallery_images (url, caption, sort) values (${url}, ${caption}, ${sort})`;
+}
+
+export async function updateGalleryImageAdmin(
+  id: string,
+  caption: string | null,
+  sort: number
+): Promise<void> {
+  await sql`update gallery_images set caption = ${caption}, sort = ${sort} where id = ${id}`;
+}
+
+export async function deleteGalleryImageAdmin(id: string): Promise<void> {
+  await sql`delete from gallery_images where id = ${id}`;
+}
+
+// ---- Enquiries ----
+export type AdminEnquiry = {
+  id: string;
+  name: string;
+  company: string | null;
+  contact: string;
+  event_type: string | null;
+  message: string | null;
+  handled: boolean;
+  created_at: string;
+};
+
+export async function listEnquiriesAdmin(): Promise<AdminEnquiry[]> {
+  const { rows } = await sql<AdminEnquiry>`
+    select id, name, company, contact, event_type, message, handled, created_at
+    from enquiries order by created_at desc
+  `;
+  return rows;
+}
+
+export async function setEnquiryHandledAdmin(
+  id: string,
+  handled: boolean
+): Promise<void> {
+  await sql`update enquiries set handled = ${handled} where id = ${id}`;
+}
+
+// ---- Orders ----
+export type AdminOrder = {
+  id: string;
+  status: string;
+  amount_fen: number;
+  customer_name: string;
+  email: string | null;
+  provider: string;
+  created_at: string;
+  paid_at: string | null;
+  event_name: string | null;
+  item_count: number;
+};
+
+export async function listOrdersAdmin(): Promise<AdminOrder[]> {
+  const { rows } = await sql<AdminOrder>`
+    select o.id, o.status, o.amount_fen, o.customer_name, o.email, o.provider,
+           o.created_at, o.paid_at, e.name as event_name,
+           (select coalesce(sum(oi.qty),0) from order_items oi where oi.order_id = o.id)::int as item_count
+    from orders o
+    left join events e on e.id = o.event_id
+    order by o.created_at desc
+  `;
+  return rows;
+}
+
+// ---- Users (team) ----
+export type AdminUser = {
+  id: string;
+  email: string;
+  role: UserRole;
+  name: string | null;
+  created_at: string;
+};
+
+export async function listUsersAdmin(): Promise<AdminUser[]> {
+  const { rows } = await sql<AdminUser>`
+    select id, email, role, name, created_at from users order by created_at asc
+  `;
+  return rows;
+}
+
+export async function createUserAdmin(
+  email: string,
+  passwordHash: string,
+  role: UserRole,
+  name: string | null
+): Promise<void> {
+  await sql`
+    insert into users (email, password_hash, role, name)
+    values (${email.toLowerCase().trim()}, ${passwordHash}, ${role}, ${name})
+  `;
+}
+
+export async function updateUserPasswordAdmin(
+  id: string,
+  passwordHash: string
+): Promise<void> {
+  await sql`update users set password_hash = ${passwordHash} where id = ${id}`;
+}
+
+export async function deleteUserAdmin(id: string): Promise<void> {
+  await sql`delete from users where id = ${id}`;
+}
+
+export async function countOwners(): Promise<number> {
+  const { rows } = await sql<{ n: number }>`select count(*)::int as n from users where role = 'owner'`;
+  return rows[0]?.n ?? 0;
+}
