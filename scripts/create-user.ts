@@ -8,12 +8,8 @@
  * Or create any user via flags:
  *   npm run user:create -- --email a@b.com --password secret --role admin --name "Jo"
  */
-import { config } from "dotenv";
 import bcrypt from "bcryptjs";
-import { sql } from "@vercel/postgres";
-
-config({ path: ".env.local" });
-config();
+import { sql } from "./db-client";
 
 function arg(name: string): string | undefined {
   const i = process.argv.indexOf(`--${name}`);
@@ -21,10 +17,6 @@ function arg(name: string): string | undefined {
 }
 
 async function main() {
-  if (!process.env.POSTGRES_URL) {
-    throw new Error("POSTGRES_URL is not set (copy .env.example to .env.local).");
-  }
-
   const seedOwner = process.argv.includes("--seed-owner");
   const email = (arg("email") ?? (seedOwner ? process.env.OWNER_EMAIL : "")) ?? "";
   const password =

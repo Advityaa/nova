@@ -1,8 +1,41 @@
 import "server-only";
-import { db, sql } from "@vercel/postgres";
+import { randomUUID } from "node:crypto";
+import { neon, type NeonQueryFunction } from "@neondatabase/serverless";
 import type { EventItem, Tier } from "./data";
 
-export { sql };
+// ---- Neon connection (lazy) ----
+// Neon's Vercel Marketplace integration sets DATABASE_URL. We also accept the
+// legacy POSTGRES_URL for back-compat. The client is created lazily so that
+// importing this module during `next build` never throws when env is unset.
+function connectionString(): string {
+  const cs =
+    process.env.DATABASE_URL ||
+    process.env.POSTGRES_URL ||
+    process.env.DATABASE_URL_UNPOOLED;
+  if (!cs) {
+    throw new Error(
+      "No database connection string. Set DATABASE_URL (Neon) in your environment."
+    );
+  }
+  return cs;
+}
+
+let _neon: NeonQueryFunction<false, true> | null = null;
+function neonClient(): NeonQueryFunction<false, true> {
+  if (!_neon) _neon = neon(connectionString(), { fullResults: true });
+  return _neon;
+}
+
+/**
+ * Tagged-template query returning `{ rows }` (like the old @vercel/postgres
+ * `sql`), so call sites are unchanged: `const { rows } = await sql<T>`…``.
+ */
+export function sql<T = Record<string, unknown>>(
+  strings: TemplateStringsArray,
+  ...params: unknown[]
+): Promise<{ rows: T[] }> {
+  return neonClient()(strings, ...params) as unknown as Promise<{ rows: T[] }>;
+}
 
 // ----- Raw row shapes -----
 type EventRow = {
@@ -86,18 +119,12 @@ function mapEvent(row: EventRow, tiers: TierRow[]): EventItem {
   };
 }
 
-// Fetch tiers for a set of event ids and group them by event.
-async function tiersByEvent(
-  eventIds: string[]
-): Promise<Record<string, TierRow[]>> {
-  if (eventIds.length === 0) return {};
-  const { rows } = await sql.query<TierRow>(
-    "select * from ticket_tiers where event_id = ANY($1::uuid[]) order by sort asc",
-    [eventIds]
-  );
-  const grouped: Record<string, TierRow[]> = {};
-  for (const t of rows) (grouped[t.event_id] ??= []).push(t);
-  return grouped;
+/** Tiers for a single event (by id), in display order. */
+async function tiersFor(eventId: string): Promise<TierRow[]> {
+  const { rows } = await sql<TierRow>`
+    select * from ticket_tiers where event_id = ${eventId} order by sort asc
+  `;
+  return rows;
 }
 
 // ----- Public queries -----
@@ -109,8 +136,7 @@ export async function getOnsaleEvents(): Promise<EventItem[]> {
     where status = 'onsale'
     order by starts_at asc nulls last, created_at asc
   `;
-  const tiers = await tiersByEvent(rows.map((r) => r.id));
-  return rows.map((r) => mapEvent(r, tiers[r.id] ?? []));
+  return Promise.all(rows.map(async (r) => mapEvent(r, await tiersFor(r.id))));
 }
 
 /** The featured event for the hero (falls back to the first on-sale event). */
@@ -122,8 +148,7 @@ export async function getFeaturedEvent(): Promise<EventItem | null> {
   `;
   const row = rows[0];
   if (!row) return null;
-  const tiers = await tiersByEvent([row.id]);
-  return mapEvent(row, tiers[row.id] ?? []);
+  return mapEvent(row, await tiersFor(row.id));
 }
 
 /** A single event by slug, with its tiers (for the detail page & drawer). */
@@ -133,8 +158,7 @@ export async function getEventBySlug(slug: string): Promise<EventItem | null> {
   `;
   const row = rows[0];
   if (!row) return null;
-  const tiers = await tiersByEvent([row.id]);
-  return mapEvent(row, tiers[row.id] ?? []);
+  return mapEvent(row, await tiersFor(row.id));
 }
 
 /** All event slugs (useful for sitemaps / static params later). */
@@ -151,7 +175,7 @@ export async function getGalleryImages(): Promise<string[]> {
   return rows.map((r) => r.url);
 }
 
-// ----- Mutations -----
+// ----- Enquiries -----
 export type EnquiryInput = {
   name: string;
   company?: string;
@@ -237,40 +261,30 @@ export type NewOrder = {
   items: { tierId: string; qty: number; unitPriceFen: number }[];
 };
 
-/** Create a `pending` order + its items in a single transaction. Returns the order id. */
+/**
+ * Create a `pending` order + its items atomically. We pre-generate the order id
+ * so all inserts can run in a single Neon HTTP transaction (no interleaved
+ * round-trips, no WebSocket).
+ */
 export async function createOrder(order: NewOrder): Promise<string> {
-  const client = await db.connect();
-  try {
-    await client.query("begin");
-    const { rows } = await client.query<{ id: string }>(
-      `insert into orders (event_id, customer_name, email, phone, amount_fen, status, provider)
-       values ($1, $2, $3, $4, $5, 'pending', $6)
-       returning id`,
-      [
-        order.eventId,
-        order.customer.name,
-        order.customer.email ?? null,
-        order.customer.phone ?? null,
-        order.amountFen,
-        order.provider,
-      ]
-    );
-    const orderId = rows[0].id;
-    for (const item of order.items) {
-      await client.query(
-        `insert into order_items (order_id, tier_id, qty, unit_price_fen)
-         values ($1, $2, $3, $4)`,
-        [orderId, item.tierId, item.qty, item.unitPriceFen]
-      );
-    }
-    await client.query("commit");
-    return orderId;
-  } catch (err) {
-    await client.query("rollback");
-    throw err;
-  } finally {
-    client.release();
-  }
+  const orderId = randomUUID();
+  const client = neonClient();
+  const queries = [
+    client`
+      insert into orders (id, event_id, customer_name, email, phone, amount_fen, status, provider)
+      values (${orderId}, ${order.eventId}, ${order.customer.name},
+              ${order.customer.email ?? null}, ${order.customer.phone ?? null},
+              ${order.amountFen}, 'pending', ${order.provider})
+    `,
+    ...order.items.map(
+      (item) => client`
+        insert into order_items (order_id, tier_id, qty, unit_price_fen)
+        values (${orderId}, ${item.tierId}, ${item.qty}, ${item.unitPriceFen})
+      `
+    ),
+  ];
+  await client.transaction(queries);
+  return orderId;
 }
 
 /** Store the provider reference returned by createCheckout. */
@@ -283,41 +297,34 @@ export async function setOrderProviderRef(
 
 /**
  * Mark an order paid and increment `sold` on its tiers — atomically and
- * idempotently (the `status = 'pending'` guard means a replayed callback won't
- * double-count sales). Returns true if this call is the one that flipped it.
+ * idempotently in ONE statement. The `paid` CTE flips the order only when it's
+ * still `pending`; the `bump` CTE increments `sold` only for that freshly-paid
+ * order. A replayed callback flips 0 rows → no double-counting. Returns true if
+ * this call is the one that marked it paid.
  */
 export async function markOrderPaid(
   orderId: string,
   providerRef: string
 ): Promise<boolean> {
-  const client = await db.connect();
-  try {
-    await client.query("begin");
-    const { rows } = await client.query<{ id: string }>(
-      `update orders
-         set status = 'paid', provider_ref = coalesce($2, provider_ref), paid_at = now()
-       where id = $1 and status = 'pending'
-       returning id`,
-      [orderId, providerRef]
-    );
-    const flipped = rows.length > 0;
-    if (flipped) {
-      await client.query(
-        `update ticket_tiers t
-           set sold = t.sold + oi.qty
-         from order_items oi
-         where oi.order_id = $1 and oi.tier_id = t.id`,
-        [orderId]
-      );
-    }
-    await client.query("commit");
-    return flipped;
-  } catch (err) {
-    await client.query("rollback");
-    throw err;
-  } finally {
-    client.release();
-  }
+  const { rows } = await sql<{ flipped: number }>`
+    with paid as (
+      update orders
+         set status = 'paid',
+             provider_ref = coalesce(${providerRef}, provider_ref),
+             paid_at = now()
+       where id = ${orderId} and status = 'pending'
+       returning id
+    ),
+    bump as (
+      update ticket_tiers t
+         set sold = t.sold + oi.qty
+        from order_items oi
+       where oi.order_id in (select id from paid) and oi.tier_id = t.id
+       returning 1
+    )
+    select (select count(*) from paid)::int as flipped
+  `;
+  return (rows[0]?.flipped ?? 0) > 0;
 }
 
 export type OrderView = {
@@ -346,7 +353,7 @@ export type OrderView = {
 
 /** Full order (with items + event fields) for the confirmation page. */
 export async function getOrder(orderId: string): Promise<OrderView | null> {
-  const { rows } = await sql`
+  const { rows } = await sql<Omit<OrderView, "items">>`
     select o.id, o.status, o.amount_fen, o.customer_name, o.email, o.phone,
            o.provider, o.provider_ref, o.created_at, o.paid_at,
            e.name as event_name, e.slug as event_slug, e.type as event_type,
@@ -373,5 +380,5 @@ export async function getOrder(orderId: string): Promise<OrderView | null> {
     order by t.sort asc nulls last
   `;
 
-  return { ...(row as Omit<OrderView, "items">), items };
+  return { ...row, items };
 }

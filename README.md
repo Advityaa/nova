@@ -1,21 +1,23 @@
 # Nova Events
 
-Shanghai nightlife & events site — Next.js 14 (App Router) + TypeScript + Tailwind, with content served from **Vercel Postgres**.
+Shanghai nightlife & events site — Next.js 14 (App Router) + TypeScript + Tailwind, with content served from **Neon Postgres** via the `@neondatabase/serverless` driver.
 
-## Database setup (Vercel Postgres)
+## Database setup (Neon via the Vercel Marketplace)
 
-1. **Create the database.** In the Vercel dashboard → Storage → create a **Postgres** store, and connect it to this project. Vercel injects `POSTGRES_URL` (and friends) automatically on deploys.
+> `@vercel/postgres` is deprecated (it migrated to Neon). This project uses Neon's native serverless driver.
 
-2. **Local env.** Copy the store's credentials into a local env file:
+1. **Provision Neon.** In the Vercel dashboard → **Storage** → **Create Database** → **Neon** (Marketplace), and connect it to this project. Vercel/Neon auto-injects **`DATABASE_URL`** (and `DATABASE_URL_UNPOOLED`) on deploys.
+
+2. **Local env.** Copy the connection string into a local env file:
    ```bash
    cp .env.example .env.local
-   # paste the values from the Postgres store's ".env.local" tab
+   # paste DATABASE_URL from the Neon integration's ".env.local" tab in Vercel
    ```
    `.env.local` is git-ignored — never commit secrets.
 
 3. **Create the schema, then seed** the nova.html content:
    ```bash
-   npm run db:migrate   # applies db/schema.sql
+   npm run db:migrate   # applies db/schema.sql (whole file, one call)
    npm run db:seed      # inserts events, ticket tiers, gallery images
    # or both at once:
    npm run db:reset
@@ -26,7 +28,9 @@ Shanghai nightlife & events site — Next.js 14 (App Router) + TypeScript + Tail
    npm run dev
    ```
 
-The home page and event pages read live from the DB (`export const dynamic = "force-dynamic"`), so **editing a row in the Vercel Postgres data editor changes the site on the next reload** — no redeploy. Swap to `export const revalidate = 30` in `app/page.tsx` / `app/events/[slug]/page.tsx` for ISR caching instead.
+The home page and event pages read live from the DB (`export const dynamic = "force-dynamic"`), so **editing a row in the Neon data editor changes the site on the next reload** — no redeploy. Swap to `export const revalidate = 30` in `app/page.tsx` / `app/events/[slug]/page.tsx` for ISR caching instead. The homepage degrades gracefully: if the DB is unreachable it still renders (empty programme) rather than 500-ing.
+
+**Driver notes:** reads use Neon's HTTP tagged-template `sql` (no connection pooling to manage); order creation uses Neon's HTTP `transaction()`; marking an order paid + incrementing `sold` is a single atomic, idempotent CTE. The migration script uses Neon's WebSocket `Client` (via `ws`) to run the whole schema in one call.
 
 ## Data model
 

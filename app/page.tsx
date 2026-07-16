@@ -13,7 +13,7 @@ import ContactForm from "@/components/ContactForm";
 import Footer from "@/components/Footer";
 import TicketDrawer from "@/components/TicketDrawer";
 import MusicPlayer from "@/components/MusicPlayer";
-import { NEWS, RESULTS, SERVICES } from "@/lib/data";
+import { NEWS, RESULTS, SERVICES, type EventItem } from "@/lib/data";
 import {
   getFeaturedEvent,
   getGalleryImages,
@@ -25,11 +25,19 @@ import {
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const [events, featured, gallery] = await Promise.all([
-    getOnsaleEvents(),
-    getFeaturedEvent(),
-    getGalleryImages(),
-  ]);
+  // Never let a DB hiccup turn the homepage into a 500 — degrade gracefully.
+  let events: EventItem[] = [];
+  let featured: EventItem | null = null;
+  let gallery: string[] = [];
+  try {
+    [events, featured, gallery] = await Promise.all([
+      getOnsaleEvents(),
+      getFeaturedEvent(),
+      getGalleryImages(),
+    ]);
+  } catch (err) {
+    console.error("Home DB load failed — rendering without dynamic data:", err);
+  }
 
   const weekMeta = `${events.length} events · 14–24 Jul`;
 
