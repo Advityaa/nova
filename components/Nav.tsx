@@ -3,13 +3,13 @@
 import { useEffect, useState } from "react";
 
 const LINKS = [
-  { n: "01", label: "Events", href: "/events" },
-  { n: "02", label: "About", href: "/about" },
-  { n: "03", label: "Services", href: "/services" },
+  { n: "01", label: "About", href: "/about" },
+  { n: "02", label: "Contact", href: "/contact" },
+  { n: "03", label: "Events", href: "/events" },
   { n: "04", label: "Gallery", href: "/gallery" },
   { n: "05", label: "Results", href: "/results" },
-  { n: "06", label: "Sponsors", href: "/sponsors" },
-  { n: "07", label: "Contact", href: "/contact" },
+  { n: "06", label: "Services", href: "/services" },
+  { n: "07", label: "Sponsors", href: "/sponsors" },
 ];
 
 export default function Nav() {
