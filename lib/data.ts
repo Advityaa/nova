@@ -274,6 +274,7 @@ export const STATS: { n: string; k: string }[] = [
   { n: "700+", k: "Avg guests / event" },
   { n: "20K", k: "WeChat followers" },
   { n: "15K+", k: "IG & RED followers" },
+  { n: "15K+", k: "Annual High-Net-Worth Attendees" },
 ];
 
 // ---- Socials ----

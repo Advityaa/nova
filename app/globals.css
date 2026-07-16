@@ -2272,3 +2272,42 @@ footer {
 .invite-form { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
 .invite-form input, .invite-form select { background: var(--bg); border: 1px solid var(--line); color: var(--ink); font-family: var(--mono); font-size: 13px; padding: 11px 13px; outline: none; }
 .invite-form input:focus, .invite-form select:focus { border-color: var(--accent); }
+
+/* ---------- ABOUT PAGE REDESIGN ---------- */
+.about-hero { display: flex; flex-direction: column; gap: 40px; margin-bottom: 80px; }
+.about-hero-top { display: flex; flex-direction: column; gap: 20px; }
+@media (min-width: 768px) {
+  .about-hero-top { flex-direction: row; justify-content: space-between; align-items: flex-start; }
+}
+.about-hero-top h1 { font-family: var(--disp); font-size: clamp(40px, 8vw, 80px); line-height: 0.9; text-transform: uppercase; flex: 1; }
+.about-hero-top p { flex: 1; font-size: 18px; color: var(--ink-dim); max-width: 500px; line-height: 1.5; }
+.about-hero-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; height: 400px; }
+.about-hero-grid img { width: 100%; height: 100%; object-fit: cover; }
+@media (max-width: 768px) { .about-hero-grid { grid-template-columns: 1fr; height: auto; } }
+
+.about-gradient-sec { background: linear-gradient(135deg, #1c093a 0%, #300c3b 50%, #151a4f 100%); padding: clamp(40px, 5vw, 80px) clamp(20px, 5vw, 40px); margin: 80px 0; display: flex; flex-direction: column; gap: 80px; }
+
+.why-us-grid { display: grid; grid-template-columns: 1fr; gap: 40px; }
+@media (min-width: 900px) { .why-us-grid { grid-template-columns: 1fr 2fr; align-items: center; } }
+.why-us-left h2 { font-family: var(--disp); font-size: clamp(40px, 8vw, 80px); line-height: 0.9; text-transform: uppercase; margin-bottom: 24px; }
+.why-us-left p { color: var(--ink-dim); font-size: 16px; font-weight: 500; }
+
+.why-us-cards { display: grid; grid-template-columns: 1fr; gap: 1px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+@media (min-width: 768px) { .why-us-cards { grid-template-columns: 1fr 1fr; } }
+.why-us-card { background: rgba(10, 10, 12, 0.9); padding: 40px 20px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 32px; }
+.why-us-card.nova-card { background: linear-gradient(180deg, rgba(230,50,100,0.15) 0%, rgba(50,50,150,0.15) 100%); position: relative; }
+.why-us-card.nova-card::before { content: ""; position: absolute; inset: 0; border: 1px solid rgba(255,255,255,0.1); pointer-events: none; }
+.why-us-card h3 { font-family: var(--disp); font-size: 24px; letter-spacing: 2px; text-transform: uppercase; color: var(--ink-dim); }
+.why-us-card.nova-card h3 { color: #fff; font-size: 32px; }
+.why-us-card ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 24px; width: 100%; }
+.why-us-card li { font-size: 14px; color: var(--ink-dim); border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 24px; }
+.why-us-card.nova-card li { color: #fff; font-weight: 500; }
+
+.market-dom h2 { font-family: var(--disp); font-size: clamp(30px, 5vw, 60px); text-transform: uppercase; margin-bottom: 8px; line-height: 1; }
+.market-dom p { color: var(--ink-dim); text-transform: uppercase; letter-spacing: 2px; font-size: 12px; margin-bottom: 60px; font-weight: 600; }
+.market-stats { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+.market-stat { display: flex; flex-direction: column; gap: 12px; align-items: center; text-align: center; flex: 1; min-width: 120px; border-left: 1px solid rgba(255,255,255,0.1); }
+@media (max-width: 768px) { .market-stat { border-left: none; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px; } }
+.market-stat:first-child { border-left: none; }
+.market-stat .n { font-size: clamp(32px, 4vw, 48px); font-family: var(--disp); color: #fff; line-height: 1; }
+.market-stat .k { font-size: 11px; color: var(--ink-dim); max-width: 120px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; line-height: 1.4; }
