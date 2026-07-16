@@ -98,7 +98,7 @@ button {
   top: clamp(16px, 3vw, 28px);
   left: clamp(18px, 4vw, 54px);
   right: clamp(18px, 4vw, 54px);
-  z-index: 90;
+  z-index: 100;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -190,6 +190,7 @@ button {
 }
 .menu-fab.open {
   background: var(--ink);
+  color: var(--bg);
 }
 .menu-fab.open span:nth-child(1) {
   transform: translateY(7px) rotate(45deg);
