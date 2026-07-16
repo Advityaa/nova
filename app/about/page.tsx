@@ -1,10 +1,25 @@
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import { STATS } from "@/lib/data";
+import SiteProvider from "@/components/SiteProvider";
+import { STATS, type EventItem } from "@/lib/data";
+import { getOnsaleEvents, getFeaturedEvent } from "@/lib/db";
 
-export default function AboutPage() {
+export const dynamic = "force-dynamic";
+
+export default async function AboutPage() {
+  let events: EventItem[] = [];
+  let featured: EventItem | null = null;
+  try {
+    [events, featured] = await Promise.all([
+      getOnsaleEvents(),
+      getFeaturedEvent(),
+    ]);
+  } catch (err) {
+    console.error("DB load failed:", err);
+  }
+
   return (
-    <>
+    <SiteProvider events={events} featuredId={featured?.id ?? null}>
       <Nav />
       <main className="shell" style={{ paddingTop: '120px', minHeight: '80vh', paddingBottom: '80px' }}>
         <section className="sec" id="about">
@@ -80,6 +95,6 @@ export default function AboutPage() {
         </section>
       </main>
       <Footer />
-    </>
+    </SiteProvider>
   );
 }
