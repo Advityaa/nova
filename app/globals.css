@@ -422,6 +422,7 @@ button {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: 20px;
   margin-bottom: 44px;
 }
@@ -1610,6 +1611,21 @@ footer {
   display: block;
 }
 
+/* ---- Sections outside .shell need their own horizontal padding ---- */
+#connect,
+#contact {
+  padding-left: clamp(18px, 4vw, 54px);
+  padding-right: clamp(18px, 4vw, 54px);
+}
+/* Keep inner content within the same max-width as .shell */
+#connect > .sec-head,
+#connect > .social-block,
+#contact > .contact {
+  max-width: 1320px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 /* ---------- CONTACT FORM ---------- */
 .contact {
   display: grid;
@@ -1731,6 +1747,11 @@ footer {
   color: var(--ink-dim);
   text-align: center;
   letter-spacing: 0.04em;
+}
+@media (max-width: 520px) {
+  .cform {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ---------- EVENT DETAIL PAGE ---------- */
