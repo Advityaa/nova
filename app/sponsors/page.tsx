@@ -12,6 +12,11 @@ const SPONSORS = [
   { name: "Partner 7", logo: "/sponsors/7_white.png" },
   { name: "Partner 8", logo: "/sponsors/8_white.png" },
   { name: "Partner 9", logo: "/sponsors/9_white.png" },
+  { name: "Partner 10", logo: "/sponsors/10_white.png" },
+  { name: "Partner 11", logo: "/sponsors/11_white.png" },
+  { name: "Partner 12", logo: "/sponsors/12_white.png" },
+  { name: "Partner 13", logo: "/sponsors/13_white.png" },
+  { name: "Partner 14", logo: "/sponsors/14_white.png" },
 ];
 
 export default function SponsorsPage() {
