@@ -55,6 +55,7 @@ create index if not exists ticket_tiers_event_idx on ticket_tiers (event_id, sor
 -- ------------------------------------------------------------------
 create table if not exists gallery_images (
   id         uuid primary key default gen_random_uuid(),
+  event_id   uuid references events(id) on delete set null,
   url        text not null,
   caption    text,
   sort       integer not null default 0,

@@ -41,6 +41,11 @@ export default function TicketDrawer() {
       setError("Please enter your name.");
       return;
     }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email.trim())) {
+      setError("Please enter a valid email address.");
+      return;
+    }
     const items = ev.tiers
       .map((t, i) => ({ tierId: t.id ?? "", qty: cart[i] || 0 }))
       .filter((x) => x.qty > 0 && x.tierId);

@@ -555,11 +555,16 @@ export type AdminGalleryImage = {
   url: string;
   caption: string | null;
   sort: number;
+  event_id: string | null;
+  event_name: string | null;
 };
 
 export async function listGalleryAdmin(): Promise<AdminGalleryImage[]> {
   const { rows } = await sql<AdminGalleryImage>`
-    select id, url, caption, sort from gallery_images order by sort asc, created_at asc
+    select g.id, g.url, g.caption, g.sort, g.event_id, e.name as event_name
+    from gallery_images g
+    left join events e on e.id = g.event_id
+    order by g.sort asc, g.created_at asc
   `;
   return rows;
 }
@@ -567,9 +572,10 @@ export async function listGalleryAdmin(): Promise<AdminGalleryImage[]> {
 export async function addGalleryImageAdmin(
   url: string,
   caption: string | null,
-  sort: number
+  sort: number,
+  eventId: string | null
 ): Promise<void> {
-  await sql`insert into gallery_images (url, caption, sort) values (${url}, ${caption}, ${sort})`;
+  await sql`insert into gallery_images (url, caption, sort, event_id) values (${url}, ${caption}, ${sort}, ${eventId})`;
 }
 
 export async function updateGalleryImageAdmin(

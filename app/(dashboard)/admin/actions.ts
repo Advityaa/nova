@@ -154,9 +154,20 @@ export async function addGallery(
   fd: FormData
 ): Promise<FormState> {
   await requireSession();
-  const url = str(fd, "url");
-  if (!url) return { error: "Image URL or path is required." };
-  await addGalleryImageAdmin(url, nullable(fd, "caption"), intOrNull(str(fd, "sort")) ?? 0);
+  const urlsText = str(fd, "urls");
+  const eventId = nullable(fd, "event_id");
+  const caption = nullable(fd, "caption");
+  let sort = intOrNull(str(fd, "sort")) ?? 0;
+
+  if (!urlsText) return { error: "At least one Image URL is required." };
+  
+  const urls = urlsText.split(/[\n,]+/).map(u => u.trim()).filter(Boolean);
+  
+  for (const url of urls) {
+    await addGalleryImageAdmin(url, caption, sort, eventId);
+    sort++;
+  }
+  
   revalidatePath("/admin/gallery");
   revalidatePath("/");
   return { ok: true };

@@ -16,9 +16,14 @@ export default async function AdminOrdersPage() {
           <span className="admin-eyebrow">Sales</span>
           <h1>Orders</h1>
         </div>
-        <span className="admin-count">
-          {paid.length} paid · {yuan(revenueFen)} revenue
-        </span>
+        <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+          <span className="admin-count">
+            {paid.length} paid · {yuan(revenueFen)} revenue
+          </span>
+          <a href="/api/admin/export-orders" className="admin-btn admin-btn-inline" download>
+            Download CSV
+          </a>
+        </div>
       </header>
 
       {orders.length === 0 ? (
