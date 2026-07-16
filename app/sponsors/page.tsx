@@ -25,21 +25,37 @@ export default function SponsorsPage() {
       <Nav />
       <main className="shell" style={{ paddingTop: '120px', minHeight: '80vh' }}>
         <section className="sec">
-          <div className="rev" style={{ textAlign: 'center', marginBottom: 60 }}>
+          <div className="rev" style={{ textAlign: 'center', marginBottom: 40 }}>
             <h2>Official Partners</h2>
             <p style={{ color: 'var(--ink-dim)' }}>The brands that power our experiences.</p>
           </div>
           
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 40, alignItems: 'center', justifyItems: 'center', padding: '0 20px' }}>
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', 
+            gap: '20px', 
+            alignItems: 'center', 
+            justifyItems: 'center', 
+            padding: '0 15px' 
+          }}>
             {SPONSORS.map((s, i) => (
-              <div key={i} style={{ padding: 20, background: 'rgba(255,255,255,0.02)', borderRadius: 8, width: '100%', height: 120, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div key={i} style={{ 
+                padding: 15, 
+                background: 'rgba(255,255,255,0.02)', 
+                borderRadius: 8, 
+                width: '100%', 
+                height: 100, 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center' 
+              }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img 
                   src={s.logo} 
                   alt={s.name} 
                   style={{ 
-                    maxWidth: '80%', 
-                    maxHeight: '60%', 
+                    maxWidth: '90%', 
+                    maxHeight: '70%', 
                     objectFit: 'contain'
                   }} 
                 />
