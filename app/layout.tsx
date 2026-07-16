@@ -27,8 +27,20 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://novaeventsgroup.com"),
   title: "NOVA — Shanghai",
   description: "Nova Events — Shanghai nightlife & events.",
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    title: "NOVA — Shanghai",
+    description: "Nova Events — Shanghai nightlife & events.",
+    url: "https://novaeventsgroup.com",
+    siteName: "NOVA Events",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
