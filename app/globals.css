@@ -90,14 +90,66 @@ button {
 }
 
 /* ---------- FLOATING CHROME (headerless) ---------- */
-.logo-float {
+
+/* The topbar wraps the logo; it starts transparent / top-left, then on scroll
+   morphs into a centered frosted-glass pill. */
+.topbar {
   position: fixed;
-  top: clamp(16px, 3vw, 28px);
-  left: clamp(18px, 4vw, 54px);
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 90;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: clamp(16px, 3vw, 28px) clamp(18px, 4vw, 54px);
+  pointer-events: none;           /* let clicks pass through empty space */
+  transition: padding 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+              background 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+              backdrop-filter 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+              justify-content 0s;
+}
+.topbar::before {
+  /* Frosted glass backdrop — invisible at rest, fades in on scroll */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(20px) saturate(1.6);
+  -webkit-backdrop-filter: blur(20px) saturate(1.6);
+  border-bottom: 1px solid rgba(237, 233, 227, 0.06);
+  opacity: 0;
+  transition: opacity 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.topbar-logo {
+  position: relative;
+  z-index: 1;
+  pointer-events: auto;           /* logo itself is clickable */
+  display: block;
+  line-height: 0;
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.topbar-logo img {
   height: clamp(40px, 4.5vw, 58px);
-  transition: 0.3s;
   filter: drop-shadow(0 2px 14px rgba(0, 0, 0, 0.6));
+  transition: height 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+              filter 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ---- Scrolled state ---- */
+.topbar.scrolled {
+  justify-content: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.topbar.scrolled::before {
+  opacity: 1;
+}
+.topbar.scrolled .topbar-logo img {
+  height: clamp(26px, 3vw, 36px);
+  filter: drop-shadow(0 1px 6px rgba(0, 0, 0, 0.4));
 }
 .menu-fab {
   position: fixed;

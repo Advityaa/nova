@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const LINKS = [
   { n: "01", label: "Events", href: "/#events" },
@@ -13,14 +13,28 @@ const LINKS = [
 
 export default function Nav() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const close = () => setOpen(false);
+
+  useEffect(() => {
+    const threshold = 80; // px before the logo morphs
+    function onScroll() {
+      setScrolled(window.scrollY > threshold);
+    }
+    onScroll(); // set initial state
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
     <>
-      <a href="/" aria-label="Nova home" style={{ display: "contents" }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/nova-logo.png" className="logo-float" alt="Nova" />
-      </a>
+      {/* Floating header bar — holds logo + menu fab */}
+      <header className={`topbar${scrolled ? " scrolled" : ""}`}>
+        <a href="/" aria-label="Nova home" className="topbar-logo">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/nova-logo.png" alt="Nova" />
+        </a>
+      </header>
 
       <button
         className={`menu-fab${open ? " open" : ""}`}
