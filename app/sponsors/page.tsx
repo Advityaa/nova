@@ -3,11 +3,11 @@ import Footer from "@/components/Footer";
 import SiteProvider from "@/components/SiteProvider";
 
 const SPONSORS = [
-  { name: "Partner 1", logo: "/sponsors/1.jpg" },
-  { name: "Partner 2", logo: "/sponsors/2.png" },
-  { name: "Partner 3", logo: "/sponsors/3.png" },
-  { name: "Partner 4", logo: "/sponsors/4.png" },
-  { name: "Partner 5", logo: "/sponsors/5.png" },
+  { name: "Partner 1", logo: "/sponsors/1_white.png" },
+  { name: "Partner 2", logo: "/sponsors/2_white.png" },
+  { name: "Partner 3", logo: "/sponsors/3_white.png" },
+  { name: "Partner 4", logo: "/sponsors/4_white.png" },
+  { name: "Partner 5", logo: "/sponsors/5_white.png" },
 ];
 
 export default function SponsorsPage() {
@@ -31,9 +31,7 @@ export default function SponsorsPage() {
                   style={{ 
                     maxWidth: '80%', 
                     maxHeight: '60%', 
-                    objectFit: 'contain', 
-                    filter: 'grayscale(100%) invert(100%) brightness(100)',
-                    mixBlendMode: 'screen'
+                    objectFit: 'contain'
                   }} 
                 />
               </div>
