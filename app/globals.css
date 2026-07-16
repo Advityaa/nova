@@ -223,8 +223,9 @@ button {
 .overlay a {
   font-family: var(--disp);
   font-weight: 900;
-  font-size: clamp(44px, 10vw, 110px);
-  line-height: 0.98;
+  /* Use vh + vw to ensure it fits on short landscape monitors */
+  font-size: clamp(36px, min(8vw, 8vh), 80px);
+  line-height: 1.05;
   letter-spacing: -0.03em;
   text-transform: uppercase;
   color: var(--ink);
