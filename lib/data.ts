@@ -2,6 +2,7 @@
 // the shapes here are the props each component will accept.
 
 export type Tier = {
+  id?: string; // DB tier id (present when loaded from the database)
   n: string; // tier name
   d: string; // tier description
   p: number; // price (¥)
@@ -19,6 +20,7 @@ export type EventItem = {
   time: string;
   venue: string;
   area: string;
+  address?: string;
   img: string;
   status: string;
   desc: string;

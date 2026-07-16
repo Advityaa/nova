@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { type EventItem } from "@/lib/data";
+import { startCheckout } from "@/lib/checkout";
 import { useSite } from "./SiteProvider";
 
 export default function TicketDrawer() {
@@ -9,11 +10,17 @@ export default function TicketDrawer() {
   // Keep the last event mounted so the slide-out animation still shows content.
   const [shown, setShown] = useState<EventItem | null>(null);
   const [cart, setCart] = useState<Record<number, number>>({});
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (drawerEvent) {
       setShown(drawerEvent);
       setCart({});
+      setError("");
+      setBusy(false);
     }
   }, [drawerEvent]);
 
@@ -28,22 +35,32 @@ export default function TicketDrawer() {
   const count =
     ev?.tiers.reduce((sum, _t, i) => sum + (cart[i] || 0), 0) ?? 0;
 
-  function checkout() {
-    if (!ev) return;
+  async function checkout() {
+    if (!ev || count === 0) return;
+    if (!name.trim()) {
+      setError("Please enter your name.");
+      return;
+    }
     const items = ev.tiers
-      .map((t, i) => ({
-        name: `${ev.name} — ${t.n}`,
-        price: t.p,
-        qty: cart[i] || 0,
-      }))
-      .filter((x) => x.qty > 0);
-    const tot = items.reduce((s, x) => s + x.qty * x.price, 0);
-    // Stubbed until stage 3 — real Stripe handoff comes later.
-    alert(
-      "STRIPE CHECKOUT (preview)\n\n" +
-        items.map((x) => `${x.qty}× ${x.name}  ¥${x.price}`).join("\n") +
-        `\n\nTotal ¥${tot}\n\nConnect the backend to hand off to Stripe.`
-    );
+      .map((t, i) => ({ tierId: t.id ?? "", qty: cart[i] || 0 }))
+      .filter((x) => x.qty > 0 && x.tierId);
+    if (items.length === 0) {
+      setError("Tickets are not available right now.");
+      return;
+    }
+    setBusy(true);
+    setError("");
+    try {
+      await startCheckout({
+        eventSlug: ev.id,
+        items,
+        customer: { name: name.trim(), email: email.trim() || undefined },
+      });
+      // startCheckout redirects on success; nothing else to do.
+    } catch (e) {
+      setBusy(false);
+      setError(e instanceof Error ? e.message : "Checkout failed.");
+    }
   }
 
   return (
@@ -99,16 +116,41 @@ export default function TicketDrawer() {
           </div>
         </div>
         <div className="df">
+          {count > 0 && (
+            <div className="dcust">
+              <input
+                type="text"
+                placeholder="Full name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                autoComplete="name"
+              />
+              <input
+                type="email"
+                placeholder="Email (for your ticket)"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                autoComplete="email"
+              />
+            </div>
+          )}
           <div className="tot">
             <span className="tl">Total</span>
             <span className="tv">¥{total}</span>
           </div>
-          <button className="co" onClick={checkout} disabled={count === 0}>
-            {count === 0
-              ? "Select tickets"
-              : `Checkout · ${count} ${count === 1 ? "ticket" : "tickets"}`}
+          {error && <div className="derror">{error}</div>}
+          <button
+            className="co"
+            onClick={checkout}
+            disabled={count === 0 || busy}
+          >
+            {busy
+              ? "Redirecting…"
+              : count === 0
+                ? "Select tickets"
+                : `Checkout · ${count} ${count === 1 ? "ticket" : "tickets"}`}
           </button>
-          <div className="note">Secure payment · Powered by Stripe</div>
+          <div className="note">Secure payment · Mock mode (no real charge)</div>
         </div>
       </aside>
     </>

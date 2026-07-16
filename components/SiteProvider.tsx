@@ -5,9 +5,10 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
-import { EVENTS, FEATURED_ID, type EventItem } from "@/lib/data";
+import { type EventItem } from "@/lib/data";
 
 type SiteContextValue = {
   openDrawer: (id: string) => void;
@@ -31,19 +32,25 @@ function setRoom(color: string, ink: string) {
 }
 
 export default function SiteProvider({
+  events,
+  featuredId,
   children,
 }: {
+  events: EventItem[];
+  featuredId: string | null;
   children: React.ReactNode;
 }) {
   const [drawerEvent, setDrawerEvent] = useState<EventItem | null>(null);
 
-  const featured =
-    EVENTS.find((e) => e.id === FEATURED_ID) ?? EVENTS[0];
+  const featured = useMemo(
+    () => events.find((e) => e.id === featuredId) ?? events[0] ?? null,
+    [events, featuredId]
+  );
 
-  // On mount: paint the accent from the featured event (like renderHero()).
+  // On mount / when featured changes: paint the accent from the featured event.
   useEffect(() => {
-    setRoom(featured.color, featured.ink);
-  }, [featured.color, featured.ink]);
+    if (featured) setRoom(featured.color, featured.ink);
+  }, [featured]);
 
   // Reveal-on-scroll observer (ports nova.html's rev()).
   useEffect(() => {
@@ -57,25 +64,26 @@ export default function SiteProvider({
         }),
       { threshold: 0.12 }
     );
-    document
-      .querySelectorAll(".rev:not(.in)")
-      .forEach((el) => io.observe(el));
+    document.querySelectorAll(".rev:not(.in)").forEach((el) => io.observe(el));
     return () => io.disconnect();
   }, []);
 
-  const openDrawer = useCallback((id: string) => {
-    const ev = EVENTS.find((e) => e.id === id);
-    if (!ev) return;
-    setRoom(ev.color, ev.ink);
-    setDrawerEvent(ev);
-    document.body.style.overflow = "hidden";
-  }, []);
+  const openDrawer = useCallback(
+    (id: string) => {
+      const ev = events.find((e) => e.id === id);
+      if (!ev) return;
+      setRoom(ev.color, ev.ink);
+      setDrawerEvent(ev);
+      document.body.style.overflow = "hidden";
+    },
+    [events]
+  );
 
   const closeDrawer = useCallback(() => {
     setDrawerEvent(null);
     document.body.style.overflow = "";
-    setRoom(featured.color, featured.ink);
-  }, [featured.color, featured.ink]);
+    if (featured) setRoom(featured.color, featured.ink);
+  }, [featured]);
 
   return (
     <SiteContext.Provider value={{ openDrawer, closeDrawer, drawerEvent }}>

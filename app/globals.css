@@ -1732,3 +1732,349 @@ footer {
   text-align: center;
   letter-spacing: 0.04em;
 }
+
+/* ---------- EVENT DETAIL PAGE ---------- */
+/* Promote the drawer's meta grid to a global rule so the detail page can reuse
+   it (values identical to `.drawer .dmeta`, so the drawer is unaffected). */
+.dmeta {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px 16px;
+  font-family: var(--mono);
+  font-size: 12px;
+  margin-bottom: 18px;
+}
+.dmeta dt {
+  color: var(--ink-dim);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.dmeta dd {
+  text-align: right;
+}
+
+/* ---------- CHECKOUT: customer fields + error ---------- */
+.dcust {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.dcust input {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 13px;
+  padding: 12px 14px;
+  outline: none;
+  transition: 0.2s;
+}
+.dcust input:focus {
+  border-color: var(--accent);
+}
+.derror {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: #ff6b6b;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+/* ============================================================
+   ADMIN / DASHBOARD  (dark, purple accent — denser than the site)
+   ============================================================ */
+.admin-brand {
+  font-family: var(--disp);
+  font-weight: 900;
+  font-size: 20px;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.admin-brand span {
+  font-family: var(--mono);
+  font-weight: 400;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  margin-left: 8px;
+}
+
+/* ---- Login ---- */
+.admin-auth {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background-image: radial-gradient(
+    120% 80% at 50% -10%,
+    rgba(134, 75, 255, 0.16) 0%,
+    transparent 60%
+  );
+}
+.admin-auth-card {
+  width: 100%;
+  max-width: 400px;
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  padding: clamp(26px, 4vw, 40px);
+}
+.admin-auth-title {
+  font-family: var(--disp);
+  font-weight: 900;
+  font-size: 34px;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  margin: 22px 0 6px;
+}
+.admin-auth-sub {
+  color: var(--ink-dim);
+  font-size: 14px;
+  margin-bottom: 26px;
+}
+
+/* ---- Forms ---- */
+.admin-form {
+  display: grid;
+  gap: 16px;
+}
+.admin-form label {
+  display: grid;
+  gap: 8px;
+}
+.admin-form label span {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+.admin-form input {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 14px;
+  padding: 13px 15px;
+  outline: none;
+  transition: 0.2s;
+}
+.admin-form input:focus {
+  border-color: var(--accent);
+}
+.admin-btn {
+  width: 100%;
+  background: var(--accent);
+  color: var(--accent-ink);
+  border: none;
+  padding: 15px;
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: 0.2s;
+}
+.admin-btn:hover {
+  filter: brightness(1.08);
+}
+.admin-btn:disabled {
+  opacity: 0.5;
+}
+.admin-error {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: #ff6b6b;
+  border: 1px solid rgba(255, 107, 107, 0.4);
+  background: rgba(255, 107, 107, 0.08);
+  padding: 10px 12px;
+}
+
+/* ---- Shell ---- */
+.admin-shell {
+  min-height: 100svh;
+  display: grid;
+  grid-template-columns: 240px 1fr;
+}
+.admin-side {
+  border-right: 1px solid var(--line);
+  background: var(--bg-soft);
+  padding: 24px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  position: sticky;
+  top: 0;
+  height: 100svh;
+}
+.admin-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+.admin-nav a {
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: var(--ink-dim);
+  padding: 11px 14px;
+  border: 1px solid transparent;
+  transition: 0.18s;
+}
+.admin-nav a:hover {
+  color: var(--ink);
+  background: rgba(237, 233, 227, 0.04);
+}
+.admin-nav a.active {
+  color: var(--accent-ink);
+  background: var(--accent);
+}
+.admin-user {
+  border-top: 1px solid var(--line);
+  padding-top: 18px;
+  display: grid;
+  gap: 6px;
+}
+.admin-user-email {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink);
+  word-break: break-all;
+}
+.admin-user-role {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+.admin-signout {
+  margin-top: 8px;
+  width: 100%;
+  background: none;
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 10px;
+  transition: 0.2s;
+}
+.admin-signout:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ---- Main ---- */
+.admin-main {
+  padding: clamp(24px, 4vw, 44px);
+}
+.admin-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+.admin-eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  display: block;
+  margin-bottom: 10px;
+}
+.admin-head h1 {
+  font-family: var(--disp);
+  font-weight: 900;
+  font-size: clamp(30px, 5vw, 48px);
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  line-height: 0.9;
+}
+.admin-card {
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  padding: 22px;
+}
+.admin-welcome {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.admin-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex: none;
+  box-shadow: 0 0 0 4px rgba(134, 75, 255, 0.18);
+}
+.admin-welcome-title {
+  font-family: var(--disp);
+  font-weight: 800;
+  font-size: 18px;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+.admin-welcome-sub {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--ink-dim);
+  margin-top: 3px;
+}
+.admin-welcome-sub strong {
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 14px;
+}
+.admin-card-k {
+  font-family: var(--disp);
+  font-weight: 800;
+  font-size: 18px;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+.admin-card-v {
+  color: var(--ink-dim);
+  font-size: 13px;
+  margin: 6px 0 16px;
+}
+.admin-soon {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.admin-placeholder p {
+  color: var(--ink-dim);
+  font-size: 14px;
+}
+
+@media (max-width: 720px) {
+  .admin-shell {
+    grid-template-columns: 1fr;
+  }
+  .admin-side {
+    position: static;
+    height: auto;
+    flex-direction: column;
+  }
+  .admin-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}

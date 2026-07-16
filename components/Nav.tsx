@@ -3,12 +3,12 @@
 import { useState } from "react";
 
 const LINKS = [
-  { n: "01", label: "Events", href: "#events" },
-  { n: "02", label: "About", href: "#about" },
-  { n: "03", label: "Services", href: "#services" },
-  { n: "04", label: "Gallery", href: "#gallery" },
-  { n: "05", label: "Results", href: "#press" },
-  { n: "06", label: "Contact", href: "#contact" },
+  { n: "01", label: "Events", href: "/#events" },
+  { n: "02", label: "About", href: "/#about" },
+  { n: "03", label: "Services", href: "/#services" },
+  { n: "04", label: "Gallery", href: "/#gallery" },
+  { n: "05", label: "Results", href: "/#press" },
+  { n: "06", label: "Contact", href: "/#contact" },
 ];
 
 export default function Nav() {
@@ -17,8 +17,10 @@ export default function Nav() {
 
   return (
     <>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/nova-logo.png" className="logo-float" alt="Nova" />
+      <a href="/" aria-label="Nova home" style={{ display: "contents" }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/nova-logo.png" className="logo-float" alt="Nova" />
+      </a>
 
       <button
         className={`menu-fab${open ? " open" : ""}`}

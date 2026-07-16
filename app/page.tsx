@@ -13,27 +13,34 @@ import ContactForm from "@/components/ContactForm";
 import Footer from "@/components/Footer";
 import TicketDrawer from "@/components/TicketDrawer";
 import MusicPlayer from "@/components/MusicPlayer";
+import { NEWS, RESULTS, SERVICES } from "@/lib/data";
 import {
-  EVENTS,
-  FEATURED_ID,
-  GALLERY_IMAGES,
-  NEWS,
-  RESULTS,
-  SERVICES,
-  WEEK_META,
-} from "@/lib/data";
+  getFeaturedEvent,
+  getGalleryImages,
+  getOnsaleEvents,
+} from "@/lib/db";
 
-export default function Home() {
-  const featured = EVENTS.find((e) => e.id === FEATURED_ID) ?? EVENTS[0];
+// Read fresh from the DB on each request so edits appear without a redeploy.
+// Swap to `export const revalidate = 30` for ISR caching if preferred.
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const [events, featured, gallery] = await Promise.all([
+    getOnsaleEvents(),
+    getFeaturedEvent(),
+    getGalleryImages(),
+  ]);
+
+  const weekMeta = `${events.length} events · 14–24 Jul`;
 
   return (
-    <SiteProvider>
+    <SiteProvider events={events} featuredId={featured?.id ?? null}>
       <Nav />
-      <HeroVideo event={featured} />
+      {featured && <HeroVideo event={featured} />}
 
       <main className="shell">
-        <EventCards events={EVENTS} weekMeta={WEEK_META} />
-        <Gallery images={GALLERY_IMAGES} />
+        <EventCards events={events} weekMeta={weekMeta} />
+        <Gallery images={gallery} />
         <TrackRecord results={RESULTS} />
         <News news={NEWS} />
         <Vip />

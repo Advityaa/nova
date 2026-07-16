@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { INSTAGRAM_HANDLE, INSTAGRAM_LINK, WHATSAPP_LINK, WHATSAPP_NUMBER } from "@/lib/data";
+import { submitEnquiry } from "@/app/actions";
 
 const EVENT_TYPES = [
   "Brand activation",
@@ -27,11 +28,20 @@ export default function ContactForm() {
   const [type, setType] = useState(EVENT_TYPES[0]);
   const [msg, setMsg] = useState("");
 
-  function sendEnquiry() {
+  async function sendEnquiry() {
     if (!name.trim() || !contact.trim()) {
       alert("Please add your name and how we can reach you.");
       return;
     }
+    // Persist to the DB (best-effort — we still open WhatsApp regardless).
+    submitEnquiry({
+      name,
+      company,
+      contact,
+      eventType: type,
+      message: msg,
+    }).catch(() => {});
+
     const lines = [
       "New enquiry via nova site",
       "Name: " + name.trim(),
