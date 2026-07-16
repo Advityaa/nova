@@ -8,6 +8,10 @@ const SPONSORS = [
   { name: "Partner 3", logo: "/sponsors/3_white.png" },
   { name: "Partner 4", logo: "/sponsors/4_white.png" },
   { name: "Partner 5", logo: "/sponsors/5_white.png" },
+  { name: "Partner 6", logo: "/sponsors/6_white.png" },
+  { name: "Partner 7", logo: "/sponsors/7_white.png" },
+  { name: "Partner 8", logo: "/sponsors/8_white.png" },
+  { name: "Partner 9", logo: "/sponsors/9_white.png" },
 ];
 
 export default function SponsorsPage() {
