@@ -9,3 +9,8 @@ npm-debug.log*
 next-env.d.ts
 .vercel
 *.tsbuildinfo
+
+# Local agent/skill tooling artifacts (not part of the app)
+.agents/
+.neon
+skills-lock.json
