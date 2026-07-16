@@ -287,10 +287,10 @@ export const WECHAT_ID = "Novaevents";
 export type SocialKey = "wa" | "ig" | "wc";
 
 // ---- Music queue ----
-export type Track = { title: string; src: string };
+export type Track = { title: string; ytId: string };
 
 export const QUEUE: Track[] = [
-  { title: "Fire Fire", src: "/audio/fire-fire.mp3" },
-  { title: "Move", src: "/audio/move.mp3" },
-  { title: "Ma Tanasi", src: "/audio/ma-tanasi.mp3" },
+  { title: "Anyma & Chris Avantgarde - Eternity", ytId: "UqbF1-hbjzs" },
+  { title: "ARTBAT, Argy, Zafrir - Tibet", ytId: "hghqd1eBTYQ" },
+  { title: "Tale Of Us - Time", ytId: "si6Ox8IuZeU" },
 ];

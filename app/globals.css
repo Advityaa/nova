@@ -1421,6 +1421,33 @@ footer {
     max-width: 120px;
   }
 }
+.nowplaying.collapsed .np-info,
+.nowplaying.collapsed .np-next {
+  display: none;
+}
+.nowplaying .np-collapse {
+  width: 44px;
+  height: 56px;
+  flex: none;
+  border: none;
+  border-left: 1px solid var(--line);
+  background: none;
+  color: var(--ink-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s;
+}
+.nowplaying .np-collapse:hover {
+  color: var(--accent);
+}
+.nowplaying .np-collapse svg {
+  width: 16px;
+  height: 16px;
+}
+.nowplaying.collapsed .np-collapse {
+  border-left: none;
+}
 
 /* ---------- SERVICES ---------- */
 .services {

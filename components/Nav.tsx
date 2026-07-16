@@ -54,13 +54,6 @@ export default function Nav() {
             {l.label}
           </a>
         ))}
-        <div className="foot">
-          <span>Shanghai · Est. 2015</span>
-          <span>
-            <a href="#">Instagram</a> &nbsp; <a href="#">WeChat: Novaevents</a>{" "}
-            &nbsp; <a href="#">RED</a>
-          </span>
-        </div>
       </nav>
     </>
   );
