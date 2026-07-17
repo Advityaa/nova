@@ -10,34 +10,52 @@ function scrollTo(id: string) {
 
 export default function HeroVideo({ event }: { event: EventItem }) {
   const { openDrawer } = useSite();
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const desktopVideoRef = useRef<HTMLVideoElement>(null);
+  const mobileVideoRef = useRef<HTMLVideoElement>(null);
   const [soundOn, setSoundOn] = useState(false);
 
   const fromPrice = Math.min(...event.tiers.map((t) => t.p));
 
   function toggleSound() {
-    const v = videoRef.current;
     const next = !soundOn;
     setSoundOn(next);
-    if (v) {
-      v.muted = !next;
-      if (next) v.play().catch(() => {});
-    }
+    
+    [desktopVideoRef.current, mobileVideoRef.current].forEach(v => {
+      if (v) {
+        v.muted = !next;
+        if (next) v.play().catch(() => {});
+      }
+    });
   }
 
   return (
     <header className="hero" id="top">
       <div className="bg">
+        {/* Desktop Video */}
         <video
-          ref={videoRef}
-          id="heroVideo"
+          ref={desktopVideoRef}
+          className="hidden md:block w-full h-full object-cover"
+          id="heroVideoDesktop"
           autoPlay
           muted
           loop
           playsInline
           poster="/images/hero-poster.jpg"
         >
-          <source src="/video/hero.mp4" type="video/mp4" />
+          <source src="/video/hero-desktop.mp4" type="video/mp4" />
+        </video>
+        {/* Mobile Video */}
+        <video
+          ref={mobileVideoRef}
+          className="block md:hidden w-full h-full object-cover"
+          id="heroVideoMobile"
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster="/images/hero-poster.jpg"
+        >
+          <source src="/video/hero-mobile.mp4" type="video/mp4" />
         </video>
       </div>
 
