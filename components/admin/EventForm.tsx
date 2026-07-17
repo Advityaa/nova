@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useFormState, useFormStatus } from "react-dom";
 import { saveEvent, type FormState } from "@/app/(dashboard)/admin/actions";
 import type { AdminEvent } from "@/lib/db";
+import ImageUploader from "./ImageUploader";
 
 const TYPES = ["Techno", "Rooftop", "Pool", "House", "Event"];
 const STATUSES = ["draft", "onsale", "soldout", "past"];
@@ -114,8 +115,8 @@ export default function EventForm({ event }: { event?: AdminEvent }) {
       </div>
 
       <label className="afield">
-        <span>Hero image (URL or /images/…)</span>
-        <input name="hero_image" defaultValue={event?.hero_image ?? ""} placeholder="/images/event-mass.jpg" />
+        <span>Hero image</span>
+        <ImageUploader name="hero_image" defaultValue={event?.hero_image ?? ""} />
       </label>
 
       <label className="afield">

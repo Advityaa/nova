@@ -123,7 +123,7 @@ export default function TicketDrawer() {
                   <div className="td">{t.d}</div>
                 </div>
                 <div className="tr">
-                  <span className="tp">¥{t.p}</span>
+                  <span className="tp">${t.p}</span>
                   <div className="step">
                     <button onClick={() => step(i, -1)}>−</button>
                     <span className="q">{cart[i] || 0}</span>
@@ -155,7 +155,7 @@ export default function TicketDrawer() {
           )}
           <div className="tot">
             <span className="tl">Total</span>
-            <span className="tv">¥{total}</span>
+            <span className="tv">${total}</span>
           </div>
           {error && <div className="derror">{error}</div>}
           <button

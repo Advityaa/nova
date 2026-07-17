@@ -57,7 +57,7 @@ export default function EventTickets({ event }: { event: EventItem }) {
               <div className="td">{t.d}</div>
             </div>
             <div className="tr">
-              <span className="tp">¥{t.p}</span>
+              <span className="tp">${t.p}</span>
               <div className="step">
                 <button onClick={() => step(i, -1)}>−</button>
                 <span className="q">{cart[i] || 0}</span>
@@ -87,7 +87,7 @@ export default function EventTickets({ event }: { event: EventItem }) {
       )}
       <div className="tot" style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 16, fontFamily: "var(--mono)" }}>
         <span className="tl">Total</span>
-        <span className="tv">¥{total}</span>
+        <span className="tv">${total}</span>
       </div>
       {error && (
         <div className="derror" style={{ marginBottom: 12 }}>

@@ -8,7 +8,7 @@ import { getOrder } from "@/lib/db";
 export const dynamic = "force-dynamic";
 
 function yuan(fen: number): string {
-  return `¥${(fen / 100).toFixed(0)}`;
+  return `$${(fen / 100).toFixed(0)}`;
 }
 
 export default async function ConfirmationPage({

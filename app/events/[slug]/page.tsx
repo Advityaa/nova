@@ -75,7 +75,7 @@ export default async function EventPage({
               {event.area ? `, ${event.area}` : ""}
             </span>
             <span className="sep">/</span>
-            <span>from ¥{fromPrice}</span>
+            <span>from ${fromPrice}</span>
           </div>
         </div>
       </header>

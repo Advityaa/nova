@@ -12,14 +12,14 @@ export default function TierEditor({
     <div className="tier-editor">
       <div className="admin-subhead">
         <h2>Ticket tiers</h2>
-        <span>Prices in ¥ (stored as fen). {tiers.length} tier(s).</span>
+        <span>Prices in $ (stored as fen). {tiers.length} tier(s).</span>
       </div>
 
       <div className="tier-table">
         <div className="tier-head">
           <span>Name</span>
           <span>Description</span>
-          <span>Price ¥</span>
+          <span>Price $</span>
           <span>Cap</span>
           <span>Sold</span>
           <span>Sort</span>
@@ -32,7 +32,7 @@ export default function TierEditor({
             <input type="hidden" name="event_id" value={eventId} />
             <input name="name" defaultValue={t.name} />
             <input name="description" defaultValue={t.description ?? ""} />
-            <input name="price" type="number" step="1" min="0" defaultValue={t.price_fen / 100} />
+            <input name="price" type="number" step="0.01" min="0" defaultValue={t.price_fen / 800} />
             <input name="capacity" type="number" min="0" defaultValue={t.capacity ?? ""} />
             <span className="tier-sold">{t.sold}</span>
             <input name="sort" type="number" defaultValue={t.sort} />
@@ -48,7 +48,7 @@ export default function TierEditor({
           <input type="hidden" name="event_id" value={eventId} />
           <input name="name" placeholder="New tier name" />
           <input name="description" placeholder="Description" />
-          <input name="price" type="number" step="1" min="0" placeholder="0" />
+          <input name="price" type="number" step="0.01" min="0" placeholder="0.00" />
           <input name="capacity" type="number" min="0" placeholder="—" />
           <span className="tier-sold">0</span>
           <input name="sort" type="number" defaultValue={tiers.length} />

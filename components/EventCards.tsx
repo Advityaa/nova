@@ -33,7 +33,7 @@ function EventCard({ event }: { event: EventItem }) {
         </div>
         <div className="cfoot">
           <div className="cprice">
-            <small>from</small> ¥{fromPrice}
+            <small>from</small> ${fromPrice}
           </div>
           <button
             className="cbtn"

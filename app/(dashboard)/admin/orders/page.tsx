@@ -1,8 +1,9 @@
 import { listOrdersAdmin } from "@/lib/db";
+import OrdersTableClient from "@/components/admin/OrdersTableClient";
 
 export const dynamic = "force-dynamic";
 
-const yuan = (fen: number) => `¥${(fen / 100).toLocaleString()}`;
+const usd = (fen: number) => `$${(fen / 800).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
 export default async function AdminOrdersPage() {
   const orders = await listOrdersAdmin();
@@ -18,7 +19,7 @@ export default async function AdminOrdersPage() {
         </div>
         <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
           <span className="admin-count">
-            {paid.length} paid · {yuan(revenueFen)} revenue
+            {paid.length} paid · {usd(revenueFen)} revenue
           </span>
           <a href="/api/admin/export-orders" className="admin-btn admin-btn-inline" download>
             Download CSV
@@ -29,29 +30,7 @@ export default async function AdminOrdersPage() {
       {orders.length === 0 ? (
         <div className="admin-card admin-placeholder"><p>No orders yet.</p></div>
       ) : (
-        <div className="admin-table">
-          <div className="at-head at-orders">
-            <span>Customer</span>
-            <span>Event</span>
-            <span>Qty</span>
-            <span>Amount</span>
-            <span>Status</span>
-            <span>When</span>
-          </div>
-          {orders.map((o) => (
-            <div className="at-row at-orders" key={o.id}>
-              <span className="at-name">
-                {o.customer_name}
-                {o.email && <small>{o.email}</small>}
-              </span>
-              <span>{o.event_name ?? "—"}</span>
-              <span>{o.item_count}</span>
-              <span>{yuan(o.amount_fen)}</span>
-              <span><em className={`at-status s-${o.status}`}>{o.status}</em></span>
-              <span>{new Date(o.created_at).toUTCString().slice(5, 17)}</span>
-            </div>
-          ))}
-        </div>
+        <OrdersTableClient orders={orders} />
       )}
     </div>
   );

@@ -4,7 +4,7 @@ import { listOrdersAdmin, listEventsAdmin, listEnquiriesAdmin } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
-const yuan = (fen: number) => `¥${(fen / 100).toLocaleString()}`;
+const yuan = (fen: number) => `$${(fen / 100).toLocaleString()}`;
 
 export default async function AdminOverview() {
   const session = await auth();

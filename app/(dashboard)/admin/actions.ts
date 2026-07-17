@@ -48,10 +48,10 @@ function nullable(fd: FormData, key: string): string | null {
   const v = str(fd, key);
   return v === "" ? null : v;
 }
-function yuanToFen(v: string): number {
+function usdToFen(v: string): number {
   const n = Number(v);
   if (!Number.isFinite(n) || n < 0) return 0;
-  return Math.round(n * 100);
+  return Math.round(n * 800);
 }
 function intOrNull(v: string): number | null {
   if (v.trim() === "") return null;
@@ -134,7 +134,7 @@ export async function saveTier(fd: FormData): Promise<void> {
   const input: TierInput = {
     name: str(fd, "name") || "Ticket",
     description: nullable(fd, "description"),
-    price_fen: yuanToFen(str(fd, "price")),
+    price_fen: usdToFen(str(fd, "price")),
     capacity: intOrNull(str(fd, "capacity")),
     sort: intOrNull(str(fd, "sort")) ?? 0,
   };

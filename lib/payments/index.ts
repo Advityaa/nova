@@ -30,6 +30,7 @@ export interface PaymentProvider {
 }
 
 import { mockProvider } from "./mock";
+import { airwallexProvider } from "./airwallex";
 
 /** The active provider name, chosen via env. Defaults to the mock provider. */
 export const PAYMENT_PROVIDER_NAME = process.env.PAYMENT_PROVIDER ?? "mock";
@@ -42,8 +43,8 @@ export function getProvider(): PaymentProvider {
     // TODO: real provider here — add the module and a case, nothing else changes:
     // case "stripe":
     //   return stripeProvider;
-    // case "airwallex":
-    //   return airwallexProvider;
+    case "airwallex":
+      return airwallexProvider;
     default:
       throw new Error(
         `Unknown PAYMENT_PROVIDER "${PAYMENT_PROVIDER_NAME}". Set PAYMENT_PROVIDER=mock (or implement the provider).`

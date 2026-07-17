@@ -81,9 +81,9 @@ export function formatDDMM(value: string | null): string {
   return `${day}.${mon}`;
 }
 
-// fen (integer RMB cents) -> whole-yuan number used by the ¥{p} UI.
-export function fenToYuan(fen: number): number {
-  return Math.round(fen) / 100;
+// fen (integer RMB cents) -> whole USD amount (1 USD = 8 RMB = 800 fen).
+export function fenToUsd(fen: number): number {
+  return Number((fen / 800).toFixed(2));
 }
 
 function mapTier(row: TierRow): Tier {
@@ -91,7 +91,7 @@ function mapTier(row: TierRow): Tier {
     id: row.id,
     n: row.name,
     d: row.description ?? "",
-    p: fenToYuan(row.price_fen),
+    p: fenToUsd(row.price_fen),
   };
 }
 

@@ -73,7 +73,7 @@ export default function HeroVideo({ event }: { event: EventItem }) {
             {event.venue}, {event.area}
           </span>
           <span className="sep">/</span>
-          <span>from ¥{fromPrice}</span>
+          <span>from ${fromPrice}</span>
         </div>
         <div className="hero-cta">
           <button className="buy" onClick={() => openDrawer(event.id)}>

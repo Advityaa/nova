@@ -347,11 +347,11 @@ button {
 .hero-content h1 {
   font-family: var(--disp);
   font-weight: 900;
-  font-size: clamp(48px, 11vw, 140px);
-  line-height: 0.84;
+  font-size: clamp(36px, 8vw, 90px);
+  line-height: 0.9;
   letter-spacing: -0.035em;
   text-transform: uppercase;
-  max-width: 14ch;
+  max-width: 800px;
 }
 .hero-meta {
   display: flex;
@@ -1634,6 +1634,7 @@ footer {
   background: #09b83e;
   color: #fff;
 }
+
 .social-panel h3 {
   font-family: var(--disp);
   font-weight: 800;
