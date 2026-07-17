@@ -97,6 +97,20 @@ export default function TicketDrawer() {
             <dt>Area</dt>
             <dd>{ev?.area}</dd>
           </dl>
+
+          {ev?.id === "summer-splash-2026" && (
+            <div className="w-full mt-5 mb-5 rounded-lg overflow-hidden border border-[var(--line)] shadow-lg">
+              <video
+                src="/video/venue-summer-splash.mp4"
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="w-full h-auto object-cover block"
+              />
+            </div>
+          )}
+
           <p className="ddesc">{ev?.desc}</p>
           <div>
             {ev?.tiers.map((t, i) => (

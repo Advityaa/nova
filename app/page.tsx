@@ -1,6 +1,7 @@
 import SiteProvider from "@/components/SiteProvider";
 import Nav from "@/components/Nav";
 import HeroVideo from "@/components/HeroVideo";
+import SponsorMarquee from "@/components/SponsorMarquee";
 import EventCards from "@/components/EventCards";
 import Gallery from "@/components/Gallery";
 import TrackRecord from "@/components/TrackRecord";
@@ -64,6 +65,7 @@ export default async function Home() {
       />
       <Nav />
       {featured && <HeroVideo event={featured} />}
+      <SponsorMarquee />
 
       <main className="shell">
         <EventCards events={events} weekMeta={weekMeta} />

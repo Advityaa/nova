@@ -28,6 +28,15 @@ const config: Config = {
           "blue-techno": "var(--mood-blue-techno)",
         },
       },
+      animation: {
+        'marquee': 'marquee 25s linear infinite',
+      },
+      keyframes: {
+        marquee: {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-50%)' },
+        }
+      },
       fontFamily: {
         // Display headings
         display: ["var(--font-archivo)", "system-ui", "sans-serif"],
