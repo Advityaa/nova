@@ -27,19 +27,36 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://novaeventsgroup.com"),
-  title: "NOVA — Shanghai",
-  description: "Nova Events — Shanghai nightlife & events.",
+  metadataBase: new URL("https://www.novaeventsgroup.com"),
+  title: {
+    default: "NOVA Events | Shanghai Luxury Event Planner & Corporate Management",
+    template: "%s | NOVA Events Shanghai",
+  },
+  description: "Nova Events is Shanghai's premier luxury event planner and corporate event management agency. We specialize in high-end nightlife, yacht parties, and premium brand activations across Greater China.",
+  keywords: ["Shanghai event organizer", "luxury event planning Shanghai", "corporate events Shanghai", "nightlife organizer Shanghai", "yacht parties Shanghai", "premium events China", "Nova Events"],
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
   openGraph: {
-    title: "NOVA — Shanghai",
-    description: "Nova Events — Shanghai nightlife & events.",
-    url: "https://novaeventsgroup.com",
+    title: "NOVA Events | Shanghai Luxury Event Planner",
+    description: "Shanghai's premier luxury event planner and corporate management agency. Curation of high-end nightlife, yacht parties, and premium brand activations.",
+    url: "https://www.novaeventsgroup.com",
     siteName: "NOVA Events",
+    locale: "en_US",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "NOVA Events | Shanghai Luxury Event Planner",
+    description: "Shanghai's premier luxury event planner and corporate management agency.",
   },
 };
 

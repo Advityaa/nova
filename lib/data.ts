@@ -211,37 +211,37 @@ export type ServiceItem = {
 export const SERVICES: ServiceItem[] = [
   {
     n: "01",
-    title: "Creative Production",
+    title: "Luxury Event Planning",
     items: [
-      "Immersive theme concepting",
-      "Curation of international & local talent",
+      "Immersive theme concepting for corporate events",
+      "Curation of international & local talent in Shanghai",
       "Atmospheric lighting & sound architecture",
       "High-engagement photo/video moments",
     ],
   },
   {
     n: "02",
-    title: "Strategic Marketing",
+    title: "Strategic Event Marketing",
     items: [
-      "Targeted promotion to 30,000+ verified guests",
+      "Targeted promotion to 30,000+ verified VIP guests",
       "Influencer & KOL integration (RED/IG)",
       "Pre-event hype & post-event recap campaigns",
-      "Database management",
+      "Database management for premium brands",
     ],
   },
   {
     n: "03",
-    title: "Management & Execution",
+    title: "Corporate Event Management",
     items: [
-      "End-to-end project management",
+      "End-to-end project management in Greater China",
       "On-site operations & guest flow control",
-      "Luxury venue & hotel liaison",
-      "Commercial ROI tracking",
+      "Luxury venue & 5-star hotel liaison",
+      "Commercial ROI tracking and reporting",
     ],
   },
   {
     n: "04",
-    title: "Artist Management",
+    title: "Nightlife & Artist Management",
     items: [
       "Global & local DJs, performers, musicians",
       "Vibe curation & tailored soundscapes",
@@ -250,7 +250,7 @@ export const SERVICES: ServiceItem[] = [
   },
   {
     n: "05",
-    title: "Production Design",
+    title: "Production & Stage Design",
     items: [
       "Custom stage, lighting & LED setups",
       "Bespoke VJ sets & motion graphics",
@@ -259,11 +259,11 @@ export const SERVICES: ServiceItem[] = [
   },
   {
     n: "06",
-    title: "Visual & Editorial",
+    title: "Visual & Editorial Curation",
     items: [
       "Concept development & recurring event IP",
       "Premium posters & motion teasers",
-      "WeChat & RED copywriting / layout",
+      "WeChat & RED copywriting / layout for Chinese market",
     ],
   },
 ];

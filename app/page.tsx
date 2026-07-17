@@ -41,8 +41,27 @@ export default async function Home() {
 
   const weekMeta = `${events.length} events · 14–24 Jul`;
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Nova Events",
+    url: "https://www.novaeventsgroup.com",
+    logo: "https://www.novaeventsgroup.com/nova-logo.png",
+    description: "Shanghai's premier luxury event planner and corporate event management agency.",
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Shanghai",
+      addressCountry: "CN",
+    },
+    sameAs: ["https://www.instagram.com/novaeventsshanghai"],
+  };
+
   return (
     <SiteProvider events={events} featuredId={featured?.id ?? null}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Nav />
       {featured && <HeroVideo event={featured} />}
 
