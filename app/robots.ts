@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/admin"],
     },
-    sitemap: "https://novaeventsgroup.com/sitemap.xml",
+    sitemap: "https://www.novaeventsgroup.com/sitemap.xml",
   };
 }

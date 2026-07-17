@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getAllEventSlugs } from "@/lib/db";
 
-const BASE = "https://novaeventsgroup.com";
+const BASE = "https://www.novaeventsgroup.com";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const slugs = await getAllEventSlugs();
