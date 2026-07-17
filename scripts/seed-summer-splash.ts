@@ -1,6 +1,6 @@
 import { neon } from "@neondatabase/serverless";
 import dotenv from "dotenv";
-dotenv.config({ path: ".env.local" });
+dotenv.config({ path: ".env.production" });
 
 async function main() {
   console.log("Inserting Summer Splash event...");

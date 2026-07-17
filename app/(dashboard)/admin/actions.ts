@@ -59,13 +59,20 @@ function intOrNull(v: string): number | null {
   return Number.isFinite(n) ? n : null;
 }
 
+function parseColor(v: string, def: string): string {
+  v = v.trim();
+  if (!v) return def;
+  if (!v.startsWith("#")) return "#" + v;
+  return v;
+}
+
 function readEventInput(fd: FormData): EventInput {
   return {
     slug: str(fd, "slug"),
     name: str(fd, "name"),
     type: str(fd, "type") || "Event",
-    color: str(fd, "color") || "#864bff",
-    accent_ink: str(fd, "accent_ink") || "#ffffff",
+    color: parseColor(str(fd, "color"), "#864bff"),
+    accent_ink: parseColor(str(fd, "accent_ink"), "#ffffff"),
     lineup: nullable(fd, "lineup"),
     venue: nullable(fd, "venue"),
     area: nullable(fd, "area"),
