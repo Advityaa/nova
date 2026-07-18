@@ -7,7 +7,6 @@ import Gallery from "@/components/Gallery";
 import TrackRecord from "@/components/TrackRecord";
 import News from "@/components/News";
 import About from "@/components/About";
-import Services from "@/components/Services";
 import SocialSelector from "@/components/SocialSelector";
 import ContactForm from "@/components/ContactForm";
 import Footer from "@/components/Footer";
@@ -72,7 +71,6 @@ export default async function Home() {
         <TrackRecord results={RESULTS} />
         <News news={NEWS.slice(0, 3)} />
         <About />
-        <Services services={SERVICES} />
       </main>
 
       <SocialSelector />
