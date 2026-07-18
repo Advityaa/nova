@@ -33,7 +33,7 @@ export async function submitEnquiry(
     if (resend && CONTACT_TO) {
       try {
         const resendResult = await resend.emails.send({
-          from: "onboarding@resend.dev",
+          from: "Nova Events <info@novaeventsgroup.com>",
           to: CONTACT_TO,
         subject: `New Enquiry from ${name}`,
         react: EnquiryEmail({
