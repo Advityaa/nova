@@ -29,7 +29,7 @@ export async function submitEnquiry(
       message: input.message?.trim() || undefined,
     });
 
-    const CONTACT_TO = process.env.CONTACT_EMAIL_TO || "advitya2911@gmail.com";
+    const CONTACT_TO = process.env.CONTACT_EMAIL_TO || "novaeventsshanghai@gmail.com";
     if (resend && CONTACT_TO) {
       try {
         const resendResult = await resend.emails.send({
