@@ -76,8 +76,8 @@ export default async function Home() {
 
       <Testimonials />
 
-      <SocialSelector />
       <ContactForm />
+      <SocialSelector />
       <Footer />
 
       <TicketDrawer />

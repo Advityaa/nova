@@ -9,8 +9,8 @@ export default function ContactPage() {
     <SiteProvider events={[]} featuredId={null}>
       <Nav />
       <main style={{ paddingTop: '80px', minHeight: '80vh' }}>
-        <SocialSelector />
         <ContactForm />
+        <SocialSelector />
         <section className="sec" style={{ paddingTop: 0 }}>
           <div className="contact-address" style={{ marginTop: '0', paddingTop: '60px', borderTop: '1px solid var(--line)', maxWidth: '1320px', marginLeft: 'auto', marginRight: 'auto' }}>
             <h3 style={{ fontFamily: 'var(--disp)', fontSize: '24px', textTransform: 'uppercase', marginBottom: '16px', color: 'var(--ink)' }}>Office Address</h3>
