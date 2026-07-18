@@ -7,6 +7,7 @@ import Gallery from "@/components/Gallery";
 import TrackRecord from "@/components/TrackRecord";
 import News from "@/components/News";
 import About from "@/components/About";
+import Testimonials from "@/components/Testimonials";
 import SocialSelector from "@/components/SocialSelector";
 import ContactForm from "@/components/ContactForm";
 import Footer from "@/components/Footer";
@@ -72,6 +73,8 @@ export default async function Home() {
         <News news={NEWS.slice(0, 3)} />
         <About />
       </main>
+
+      <Testimonials />
 
       <SocialSelector />
       <ContactForm />

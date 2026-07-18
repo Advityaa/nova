@@ -2396,3 +2396,64 @@ footer {
 .market-stat:first-child { border-left: none; }
 .market-stat .n { font-size: clamp(32px, 4vw, 48px); font-family: var(--disp); color: #fff; line-height: 1; }
 .market-stat .k { font-size: 11px; color: var(--ink-dim); max-width: 120px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; line-height: 1.4; }
+
+/* ---------- TESTIMONIALS ---------- */
+.t-sec {
+  padding-bottom: 40px;
+}
+.t-slider-wrapper {
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-bottom: 20px;
+}
+.t-slider-wrapper::-webkit-scrollbar {
+  display: none;
+}
+.t-slider {
+  display: flex;
+  gap: 20px;
+  /* Align first item with the shell container max-width: 1320px + 24px padding */
+  padding: 0 max(24px, calc((100vw - 1320px) / 2));
+  scroll-snap-type: x mandatory;
+  width: max-content;
+}
+.t-card {
+  scroll-snap-align: start;
+  width: 320px;
+  background: var(--bg-soft);
+  padding: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: border-color 0.3s ease;
+}
+.t-card:hover {
+  border-color: var(--accent);
+}
+.t-quote {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--ink);
+  margin-bottom: 32px;
+  font-style: italic;
+}
+.t-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.t-author {
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--ink);
+}
+.t-company {
+  font-size: 11px;
+  color: var(--ink-dim);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
