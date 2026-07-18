@@ -1169,6 +1169,12 @@ footer {
 }
 
 /* ---------- GALLERY ---------- */
+@media (max-width: 760px) {
+  .hide-on-mobile {
+    display: none !important;
+  }
+}
+
 .ggrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

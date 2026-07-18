@@ -49,7 +49,7 @@ export default function Gallery({ images, limit }: { images: string[], limit?: n
         {displayImages.map((src, i) => (
           <div
             key={src}
-            className={`gitem${i === 0 ? " big" : ""}`}
+            className={`gitem${i === 0 ? " big" : ""}${limit && i >= 4 ? " hide-on-mobile" : ""}`}
             onClick={() => openLb(i)}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -71,7 +71,7 @@ export default function Gallery({ images, limit }: { images: string[], limit?: n
             letterSpacing: '0.1em',
             color: 'var(--ink)'
           }}>
-            View all ({images.length})
+            View more ({images.length})
           </a>
         </div>
       )}
