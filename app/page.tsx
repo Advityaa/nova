@@ -71,7 +71,7 @@ export default async function Home() {
         <EventCards events={events} weekMeta={weekMeta} />
         <Gallery images={gallery} />
         <TrackRecord results={RESULTS} />
-        <News news={NEWS} />
+        <News news={NEWS.slice(0, 3)} />
         <Vip />
         <About />
         <Services services={SERVICES} />
