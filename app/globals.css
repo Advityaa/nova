@@ -925,26 +925,27 @@ footer {
   transition: 0.45s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
 }
 .drawer.open {
-  transform: none;
+  transform: translateX(0);
 }
 .drawer .dh {
   position: relative;
-  height: 190px;
   flex: none;
-  overflow: hidden;
 }
 .drawer .dh img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
+  object-fit: contain;
+  display: block;
 }
 .drawer .dh::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(0deg, var(--bg-soft), transparent 65%);
+  background: linear-gradient(0deg, var(--bg-soft), transparent 30%);
+  pointer-events: none;
 }
 .drawer .x {
   position: absolute;
@@ -957,12 +958,58 @@ footer {
   color: var(--ink);
   font-size: 20px;
   backdrop-filter: blur(4px);
-  z-index: 3;
+  z-index: 10;
+  border-radius: 50%;
 }
 .drawer .db {
   padding: 24px;
-  overflow-y: auto;
   flex: 1;
+}
+
+@media (min-width: 768px) {
+  .drawer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr auto;
+    width: min(900px, 90vw);
+    height: min(700px, 90vh);
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    transform: translate(-50%, 100%) scale(0.95);
+    opacity: 0;
+    border-radius: 16px;
+    border: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .drawer.open {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  .drawer .dh {
+    grid-column: 1;
+    grid-row: 1 / -1;
+    height: 100%;
+    overflow: hidden;
+  }
+  .drawer .dh img {
+    height: 100%;
+    object-fit: cover;
+  }
+  .drawer .dh::after {
+    background: none;
+  }
+  .drawer .db {
+    grid-column: 2;
+    grid-row: 1;
+    overflow-y: auto;
+  }
+  .drawer .df {
+    grid-column: 2;
+    grid-row: 2;
+    position: static;
+  }
 }
 .drawer .dtype {
   display: inline-block;
@@ -1070,6 +1117,10 @@ footer {
   border-top: 1px solid var(--line);
   padding: 20px 24px;
   flex: none;
+  position: sticky;
+  bottom: 0;
+  background: var(--bg-soft);
+  z-index: 10;
 }
 .df .tot {
   display: flex;

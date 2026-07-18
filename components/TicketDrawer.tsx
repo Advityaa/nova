@@ -56,10 +56,10 @@ export default function TicketDrawer() {
         onClick={closeDrawer}
       ></div>
       <aside className={`drawer${open ? " open" : ""}`}>
+        <button className="x" onClick={closeDrawer}>
+          ×
+        </button>
         <div className="dh">
-          <button className="x" onClick={closeDrawer}>
-            ×
-          </button>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={ev?.img || ""} alt={ev?.name || ""} />
         </div>

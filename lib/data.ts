@@ -270,11 +270,10 @@ export const SERVICES: ServiceItem[] = [
 
 // ---- Stats (about) ----
 export const STATS: { n: string; k: string }[] = [
-  { n: "80", k: "Premium events / yr" },
-  { n: "700+", k: "Avg guests / event" },
-  { n: "20K", k: "WeChat followers" },
-  { n: "15K+", k: "IG & RED followers" },
-  { n: "15K+", k: "Annual High-Net-Worth Attendees" },
+  { n: "150+", k: "Events / yr" },
+  { n: "1000+", k: "Avg guests / event" },
+  { n: "70K+", k: "WeChat followers" },
+  { n: "15K", k: "Insta followers" },
 ];
 
 // ---- Socials ----

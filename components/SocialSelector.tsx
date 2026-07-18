@@ -77,7 +77,7 @@ export default function SocialSelector() {
               <h3>WhatsApp</h3>
               <p>
                 Fastest way to reach the team for bookings, tickets and brand
-                enquiries. Message Darpan directly.
+                enquiries. Message Nova directly.
               </p>
               <div className="handle">+91 75320 99689</div>
               <a
@@ -112,7 +112,7 @@ export default function SocialSelector() {
               <h3>WeChat</h3>
               <p>
                 Join 20K+ followers and 150+ groups — the epicenter of the
-                community. Add Julianne to get on the list.
+                community. Add Nova to get on the list.
               </p>
               <div className="handle">ID: {WECHAT_ID}</div>
               <button

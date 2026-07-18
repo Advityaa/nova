@@ -61,7 +61,7 @@ export default function EventCards({
     <section className="sec" id="events">
       <div className="sec-head">
         <div className="l">
-          <span className="eyebrow">Programme</span>
+          <span className="eyebrow">Upcoming Events</span>
           <h2>This week</h2>
         </div>
         <div className="r" id="weekMeta">
