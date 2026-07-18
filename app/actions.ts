@@ -6,7 +6,8 @@ import { insertEnquiry, type EnquiryInput } from "@/lib/db";
 import { Resend } from "resend";
 import EnquiryEmail from "@/components/emails/EnquiryEmail";
 
-const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
+const RESEND_KEY = process.env.RESEND_API_KEY || "re_4kUeVAVf_2EsfgE72VoC5r3inBJdXLPm8";
+const resend = RESEND_KEY ? new Resend(RESEND_KEY) : null;
 
 export type EnquiryResult = { ok: boolean; error?: string };
 
@@ -28,10 +29,11 @@ export async function submitEnquiry(
       message: input.message?.trim() || undefined,
     });
 
-    if (resend && process.env.CONTACT_EMAIL_TO) {
+    const CONTACT_TO = process.env.CONTACT_EMAIL_TO || "agarwaldarpan5@outlook.com";
+    if (resend && CONTACT_TO) {
       await resend.emails.send({
         from: "Nova Events <onboarding@resend.dev>",
-        to: process.env.CONTACT_EMAIL_TO,
+        to: CONTACT_TO,
         subject: `New Enquiry from ${name}`,
         react: EnquiryEmail({
           name,

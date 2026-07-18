@@ -13,13 +13,7 @@ const EVENT_TYPES = [
   "Other",
 ];
 
-function WaIcon() {
-  return (
-    <svg viewBox="0 0 24 24">
-      <path d="M17.5 14.4c-.3-.15-1.7-.85-2-.95-.26-.1-.45-.15-.64.15-.19.28-.73.94-.9 1.13-.16.19-.33.21-.62.07-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.47-1.75-1.64-2.05-.17-.29-.02-.44.13-.59.13-.13.3-.34.44-.51.15-.17.2-.29.3-.48.1-.2.05-.36-.02-.51-.08-.15-.64-1.55-.88-2.12-.23-.55-.47-.48-.64-.49h-.55c-.19 0-.5.07-.76.36-.26.29-1 .98-1 2.38s1.02 2.76 1.16 2.95c.14.19 2.01 3.08 4.88 4.32.68.29 1.21.47 1.63.6.68.22 1.31.19 1.8.11.55-.08 1.7-.69 1.94-1.36.24-.67.24-1.24.17-1.36-.07-.12-.26-.19-.55-.34zM12 2a10 10 0 00-8.5 15.3L2 22l4.8-1.5A10 10 0 1012 2z" />
-    </svg>
-  );
-}
+// WaIcon removed
 
 export default function ContactForm() {
   const [name, setName] = useState("");
@@ -27,33 +21,32 @@ export default function ContactForm() {
   const [contact, setContact] = useState("");
   const [type, setType] = useState(EVENT_TYPES[0]);
   const [msg, setMsg] = useState("");
+  const [success, setSuccess] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   async function sendEnquiry() {
     if (!name.trim() || !contact.trim()) {
       alert("Please add your name and how we can reach you.");
       return;
     }
-    // Persist to the DB (best-effort — we still open WhatsApp regardless).
-    submitEnquiry({
+    
+    setSubmitting(true);
+    
+    const res = await submitEnquiry({
       name,
       company,
       contact,
       eventType: type,
       message: msg,
-    }).catch(() => {});
+    });
+    
+    setSubmitting(false);
 
-    const lines = [
-      "New enquiry via nova site",
-      "Name: " + name.trim(),
-      company.trim() ? "Company/Venue: " + company.trim() : "",
-      "Contact: " + contact.trim(),
-      "Event type: " + type,
-      msg.trim() ? "Details: " + msg.trim() : "",
-    ]
-      .filter(Boolean)
-      .join("\n");
-    const url = WHATSAPP_LINK + "?text=" + encodeURIComponent(lines);
-    window.open(url, "_blank");
+    if (res.ok) {
+      setSuccess(true);
+    } else {
+      alert("Something went wrong. Please try again.");
+    }
   }
 
   return (
@@ -101,9 +94,9 @@ export default function ContactForm() {
             />
           </div>
           <div>
-            <label>Email or phone</label>
+            <label>Phone Number (with Country Code)</label>
             <input
-              placeholder="How we reach you"
+              placeholder="+86 123 4567 8900"
               value={contact}
               onChange={(e) => setContact(e.target.value)}
             />
@@ -124,12 +117,21 @@ export default function ContactForm() {
               onChange={(e) => setMsg(e.target.value)}
             />
           </div>
-          <button className="submit" onClick={sendEnquiry}>
-            <WaIcon /> Send via WhatsApp
-          </button>
-          <div className="cnote">
-            Opens WhatsApp with your enquiry pre-filled — one tap to send.
-          </div>
+          {success ? (
+            <div style={{ padding: '24px', background: 'var(--bg-soft)', border: '1px solid var(--accent)', borderRadius: '8px', textAlign: 'center' }}>
+              <h3 style={{ color: 'var(--accent)', marginBottom: '8px', fontFamily: 'var(--disp)', fontSize: '24px', textTransform: 'uppercase' }}>Enquiry Sent</h3>
+              <p style={{ color: 'var(--ink)' }}>Someone from our team will contact you shortly.</p>
+            </div>
+          ) : (
+            <>
+              <button className="submit" onClick={sendEnquiry} disabled={submitting} style={{ opacity: submitting ? 0.7 : 1 }}>
+                {submitting ? "Sending..." : "Submit Enquiry"}
+              </button>
+              <div className="cnote">
+                We typically respond within 24 hours.
+              </div>
+            </>
+          )}
         </div>
       </div>
 
