@@ -18,6 +18,7 @@ const EVENT_TYPES = [
 export default function ContactForm() {
   const [name, setName] = useState("");
   const [company, setCompany] = useState("");
+  const [email, setEmail] = useState("");
   const [contact, setContact] = useState("");
   const [type, setType] = useState(EVENT_TYPES[0]);
   const [msg, setMsg] = useState("");
@@ -35,6 +36,7 @@ export default function ContactForm() {
     const res = await submitEnquiry({
       name,
       company,
+      email,
       contact,
       eventType: type,
       message: msg,
@@ -91,6 +93,15 @@ export default function ContactForm() {
               placeholder="Optional"
               value={company}
               onChange={(e) => setCompany(e.target.value)}
+            />
+          </div>
+          <div>
+            <label>Email Address</label>
+            <input
+              type="email"
+              placeholder="you@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div>

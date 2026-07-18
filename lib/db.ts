@@ -179,6 +179,7 @@ export async function getGalleryImages(): Promise<string[]> {
 export type EnquiryInput = {
   name: string;
   company?: string;
+  email?: string;
   contact: string;
   eventType?: string;
   message?: string;
@@ -187,10 +188,11 @@ export type EnquiryInput = {
 /** Insert a contact-form enquiry. */
 export async function insertEnquiry(input: EnquiryInput): Promise<void> {
   await sql`
-    insert into enquiries (name, company, contact, event_type, message)
+    insert into enquiries (name, company, email, contact, event_type, message)
     values (
       ${input.name},
       ${input.company ?? null},
+      ${input.email ?? null},
       ${input.contact},
       ${input.eventType ?? null},
       ${input.message ?? null}

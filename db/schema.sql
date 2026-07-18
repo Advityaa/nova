@@ -71,6 +71,7 @@ create table if not exists enquiries (
   id         uuid primary key default gen_random_uuid(),
   name       text not null,
   company    text,
+  email      text,
   contact    text not null,
   event_type text,
   message    text,
@@ -135,3 +136,5 @@ create table if not exists users (
 );
 
 create index if not exists users_email_idx on users (lower(email));
+
+alter table enquiries add column if not exists email text;

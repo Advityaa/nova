@@ -24,6 +24,7 @@ export async function submitEnquiry(
     await insertEnquiry({
       name,
       company: input.company?.trim() || undefined,
+      email: input.email?.trim() || undefined,
       contact,
       eventType: input.eventType || undefined,
       message: input.message?.trim() || undefined,
@@ -31,18 +32,26 @@ export async function submitEnquiry(
 
     const CONTACT_TO = process.env.CONTACT_EMAIL_TO || "agarwaldarpan5@outlook.com";
     if (resend && CONTACT_TO) {
-      await resend.emails.send({
-        from: "Nova Events <onboarding@resend.dev>",
-        to: CONTACT_TO,
+      try {
+        const resendResult = await resend.emails.send({
+          from: "onboarding@resend.dev",
+          to: CONTACT_TO,
         subject: `New Enquiry from ${name}`,
         react: EnquiryEmail({
           name,
           company: input.company?.trim(),
+          email: input.email?.trim(),
           contact,
           eventType: input.eventType,
           message: input.message?.trim(),
         }) as React.ReactElement,
       });
+      if (resendResult.error) {
+        console.error("Resend API returned error:", resendResult.error);
+      }
+      } catch (err) {
+        console.error("Resend failed to send:", err);
+      }
     }
 
     return { ok: true };

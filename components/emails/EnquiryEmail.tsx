@@ -13,6 +13,7 @@ import * as React from "react";
 interface EnquiryEmailProps {
   name: string;
   company?: string;
+  email?: string;
   contact: string;
   eventType?: string;
   message?: string;
@@ -21,6 +22,7 @@ interface EnquiryEmailProps {
 export const EnquiryEmail = ({
   name,
   company,
+  email,
   contact,
   eventType,
   message,
@@ -43,8 +45,13 @@ export const EnquiryEmail = ({
                 <span style={label}>COMPANY:</span> {company}
               </Text>
             )}
+            {email && (
+              <Text style={field}>
+                <span style={label}>EMAIL:</span> {email}
+              </Text>
+            )}
             <Text style={field}>
-              <span style={label}>CONTACT:</span> {contact}
+              <span style={label}>PHONE:</span> {contact}
             </Text>
             {eventType && (
               <Text style={field}>
