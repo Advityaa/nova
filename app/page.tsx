@@ -68,7 +68,7 @@ export default async function Home() {
 
       <main className="shell">
         <EventCards events={events} weekMeta={weekMeta} />
-        <Gallery images={gallery} limit={6} />
+        <Gallery images={gallery} limit={5} />
         <TrackRecord results={RESULTS} />
         <News news={NEWS.slice(0, 3)} />
         <About />
