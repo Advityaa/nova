@@ -6,7 +6,7 @@ import { insertEnquiry, type EnquiryInput } from "@/lib/db";
 import { Resend } from "resend";
 import EnquiryEmail from "@/components/emails/EnquiryEmail";
 
-const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
+// (Initialization moved inside submitEnquiry for request-time env resolution)
 
 export type EnquiryResult = { ok: boolean; error?: string };
 
@@ -29,8 +29,15 @@ export async function submitEnquiry(
       message: input.message?.trim() || undefined,
     });
 
+    const resendKey = process.env.RESEND_API_KEY;
+    if (!resendKey) {
+      console.error("CRITICAL ERROR: RESEND_API_KEY is missing in Vercel environment variables.");
+    }
+    const resend = resendKey ? new Resend(resendKey) : null;
+
     const CONTACT_TO = process.env.CONTACT_EMAIL_TO || "novaeventsshanghai@gmail.com";
     if (resend && CONTACT_TO) {
+      console.log(`Sending email to ${CONTACT_TO}...`);
       try {
         const resendResult = await resend.emails.send({
           from: "Nova Events <info@support.novaeventsgroup.com>",
@@ -51,6 +58,8 @@ export async function submitEnquiry(
       } catch (err) {
         console.error("Resend failed to send:", err);
       }
+    } else {
+      console.error("Skipped sending email. Resend initialized:", !!resend, "CONTACT_TO:", !!CONTACT_TO);
     }
 
     return { ok: true };
