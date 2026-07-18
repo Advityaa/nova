@@ -6,8 +6,7 @@ import { insertEnquiry, type EnquiryInput } from "@/lib/db";
 import { Resend } from "resend";
 import EnquiryEmail from "@/components/emails/EnquiryEmail";
 
-const RESEND_KEY = process.env.RESEND_API_KEY || "re_4kUeVAVf_2EsfgE72VoC5r3inBJdXLPm8";
-const resend = RESEND_KEY ? new Resend(RESEND_KEY) : null;
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 export type EnquiryResult = { ok: boolean; error?: string };
 
