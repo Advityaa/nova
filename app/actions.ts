@@ -43,14 +43,14 @@ export async function submitEnquiry(
           from: "Nova Events <info@support.novaeventsgroup.com>",
           to: CONTACT_TO,
         subject: `New Enquiry from ${name}`,
-        react: EnquiryEmail({
+        react: React.createElement(EnquiryEmail, {
           name,
           company: input.company?.trim(),
           email: input.email?.trim(),
           contact,
           eventType: input.eventType,
           message: input.message?.trim(),
-        }) as React.ReactElement,
+        }),
       });
       if (resendResult.error) {
         console.error("Resend API returned error:", resendResult.error);
