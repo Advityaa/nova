@@ -32,7 +32,7 @@ export default function About() {
           ))}
         </div>
       </div>
-      <div style={{ marginTop: 80, borderTop: '1px solid var(--line)', paddingTop: 60 }} className="rev">
+      <div className="sr-only">
         <span className="eyebrow">AEO / Search Context</span>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 40, marginTop: 30 }}>
           <div>
