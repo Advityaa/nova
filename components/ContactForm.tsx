@@ -69,8 +69,10 @@ export default function ContactForm() {
             you&apos;re planning and the team will be in touch.
           </p>
           <div className="ci-meta">
-            Shanghai · China
-            <br />
+            <strong>NOVA SHANGHAI</strong><br />
+            No.608 XiKang Road WeWork 03-111, Jing An District, Shanghai<br />
+            上海市静安区西康路608号3楼WeWork 03-111
+            <br /><br />
             WhatsApp{" "}
             <a href={WHATSAPP_LINK} target="_blank" rel="noopener">
               +{WHATSAPP_NUMBER.slice(0, 2)} {WHATSAPP_NUMBER.slice(2, 7)}{" "}
