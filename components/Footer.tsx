@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { INSTAGRAM_LINK } from "@/lib/data";
 
 export default function Footer() {
   const [email, setEmail] = useState("");
@@ -34,24 +35,21 @@ export default function Footer() {
           </div>
           <div>
             <h4>Explore</h4>
-            <a href="#events">This week</a>
-            <a href="#">Calendar</a>
-            <a href="#vip">Tables</a>
-            <a href="#about">About</a>
+            <a href="/events">Events</a>
+            <a href="/about">About</a>
+            <a href="/services">Services</a>
+            <a href="/gallery">Gallery</a>
           </div>
           <div>
             <h4>Book</h4>
-            <a href="#vip">VIP tables</a>
-            <a href="#">Private events</a>
-            <a href="#">Guestlist</a>
-            <a href="#">WeChat: Novaevents</a>
+            <a href="/sponsors">Sponsors</a>
+            <a href="/contact">Private events</a>
+            <a href="/contact">Contact</a>
           </div>
           <div>
             <h4>Follow</h4>
-            <a href="#">Instagram</a>
-            <a href="#">WeChat</a>
-            <a href="#">RED / 小红书</a>
-            <a href="#">TikTok</a>
+            <a href={INSTAGRAM_LINK} target="_blank" rel="noopener">Instagram</a>
+            <a href="/contact">WeChat</a>
           </div>
         </div>
         <div className="foot-bot">

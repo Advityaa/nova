@@ -6,7 +6,6 @@ import EventCards from "@/components/EventCards";
 import Gallery from "@/components/Gallery";
 import TrackRecord from "@/components/TrackRecord";
 import News from "@/components/News";
-import Vip from "@/components/Vip";
 import About from "@/components/About";
 import Services from "@/components/Services";
 import SocialSelector from "@/components/SocialSelector";
@@ -69,10 +68,9 @@ export default async function Home() {
 
       <main className="shell">
         <EventCards events={events} weekMeta={weekMeta} />
-        <Gallery images={gallery} />
+        <Gallery images={gallery} limit={7} />
         <TrackRecord results={RESULTS} />
-        <News news={NEWS.slice(0, 3)} />
-        <Vip />
+        <News news={NEWS} />
         <About />
         <Services services={SERVICES} />
       </main>

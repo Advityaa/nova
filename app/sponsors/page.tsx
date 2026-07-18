@@ -35,7 +35,7 @@ export default function SponsorsPage() {
       <main className="shell" style={{ paddingTop: '120px', minHeight: '80vh' }}>
         <section className="sec">
           <div className="rev" style={{ textAlign: 'center', marginBottom: 40 }}>
-            <h2>Official Partners</h2>
+            <h2 style={{ fontFamily: 'var(--disp)', fontWeight: 900, fontSize: 'clamp(32px, 5vw, 58px)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '10px' }}>Official Partner & Sponsors</h2>
             <p style={{ color: 'var(--ink-dim)' }}>The brands that power our experiences.</p>
           </div>
           

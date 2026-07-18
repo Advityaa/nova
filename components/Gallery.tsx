@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-export default function Gallery({ images }: { images: string[] }) {
+export default function Gallery({ images, limit }: { images: string[], limit?: number }) {
+  const displayImages = limit ? images.slice(0, limit) : images;
   const [index, setIndex] = useState<number | null>(null);
   const open = index !== null;
 
@@ -45,7 +46,7 @@ export default function Gallery({ images }: { images: string[] }) {
         <div className="r">Mass · Skyline Dome · Bund</div>
       </div>
       <div className="ggrid">
-        {images.map((src, i) => (
+        {displayImages.map((src, i) => (
           <div
             key={src}
             className={`gitem${i === 0 ? " big" : ""}`}
@@ -56,6 +57,24 @@ export default function Gallery({ images }: { images: string[] }) {
           </div>
         ))}
       </div>
+
+      {limit && images.length > limit && (
+        <div style={{ textAlign: 'center', marginTop: '40px' }}>
+          <a href="/gallery" style={{
+            display: 'inline-block',
+            padding: '12px 24px',
+            border: '1px solid var(--line)',
+            borderRadius: '100px',
+            fontFamily: 'var(--mono)',
+            fontSize: '12px',
+            textTransform: 'uppercase',
+            letterSpacing: '0.1em',
+            color: 'var(--ink)'
+          }}>
+            View all ({images.length})
+          </a>
+        </div>
+      )}
 
       <div
         className={`lb${open ? " open" : ""}`}
@@ -70,7 +89,7 @@ export default function Gallery({ images }: { images: string[] }) {
           ‹
         </button>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={index !== null ? images[index] : ""} alt="" />
+        <img src={index !== null ? displayImages[index] : ""} alt="" />
         <button className="lbnav lbnext" onClick={() => step(1)}>
           ›
         </button>

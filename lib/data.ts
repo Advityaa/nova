@@ -52,7 +52,7 @@ export const EVENTS: EventItem[] = [
   {
     id: "mass",
     name: "Mass × Sevenn",
-    type: "Techno",
+    type: "Upcoming",
     color: "#864bff",
     ink: "#ffffff",
     lineup: "SEVENN — Afterlife (USA)",
@@ -94,7 +94,7 @@ export const EVENTS: EventItem[] = [
   {
     id: "warehouse",
     name: "Warehouse 04",
-    type: "Techno",
+    type: "Upcoming",
     color: "#37b6ff",
     ink: "#0A0A0C",
     lineup: "NOVA Residents / Guests",

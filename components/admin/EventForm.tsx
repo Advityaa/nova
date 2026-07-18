@@ -6,7 +6,7 @@ import { saveEvent, type FormState } from "@/app/(dashboard)/admin/actions";
 import type { AdminEvent } from "@/lib/db";
 import ImageUploader from "./ImageUploader";
 
-const TYPES = ["Techno", "Rooftop", "Pool", "House", "Event"];
+const TYPES = ["Upcoming", "Rooftop", "Pool", "House", "Event"];
 const STATUSES = ["draft", "onsale", "soldout", "past"];
 
 // timestamptz -> value for <input type="datetime-local"> (UTC wall-clock)
@@ -47,7 +47,7 @@ export default function EventForm({ event }: { event?: AdminEvent }) {
       <div className="afg-row">
         <label className="afield">
           <span>Type</span>
-          <select name="type" defaultValue={event?.type ?? "Techno"}>
+          <select name="type" defaultValue={event?.type ?? "Upcoming"}>
             {TYPES.map((t) => <option key={t}>{t}</option>)}
           </select>
         </label>

@@ -69,10 +69,6 @@ export default function ContactForm() {
             you&apos;re planning and the team will be in touch.
           </p>
           <div className="ci-meta">
-            <strong>NOVA SHANGHAI</strong><br />
-            No.608 XiKang Road WeWork 03-111, Jing An District, Shanghai<br />
-            上海市静安区西康路608号3楼WeWork 03-111
-            <br /><br />
             WhatsApp{" "}
             <a href={WHATSAPP_LINK} target="_blank" rel="noopener">
               +{WHATSAPP_NUMBER.slice(0, 2)} {WHATSAPP_NUMBER.slice(2, 7)}{" "}
@@ -135,6 +131,15 @@ export default function ContactForm() {
             Opens WhatsApp with your enquiry pre-filled — one tap to send.
           </div>
         </div>
+      </div>
+
+      <div className="contact-address" style={{ marginTop: '80px', paddingTop: '60px', borderTop: '1px solid var(--line)', maxWidth: '1320px', marginLeft: 'auto', marginRight: 'auto' }}>
+        <h3 style={{ fontFamily: 'var(--disp)', fontSize: '24px', textTransform: 'uppercase', marginBottom: '16px', color: 'var(--ink)' }}>Office Address</h3>
+        <p style={{ color: 'var(--ink-dim)', lineHeight: '1.6' }}>
+          <strong>NOVA SHANGHAI</strong><br />
+          No.608 XiKang Road WeWork 03-111, Jing An District, Shanghai<br />
+          上海市静安区西康路608号3楼WeWork 03-111
+        </p>
       </div>
     </section>
   );
