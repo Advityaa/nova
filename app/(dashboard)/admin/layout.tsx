@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth, signOut } from "@/auth";
 import AdminNav from "@/components/AdminNav";
@@ -17,7 +18,9 @@ export default async function AdminLayout({
     <div className="admin-shell">
       <aside className="admin-side">
         <div className="admin-brand">
-          NOVA<span>/ ADMIN</span>
+          <Link href="/admin" style={{ textDecoration: 'none', color: 'inherit' }}>
+            NOVA<span>/ ADMIN</span>
+          </Link>
         </div>
 
         <AdminNav />

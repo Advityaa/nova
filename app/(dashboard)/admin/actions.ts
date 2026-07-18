@@ -109,8 +109,7 @@ export async function saveEvent(
     if (/unique|duplicate/i.test(msg)) return { error: `Slug "${input.slug}" is already taken.` };
     return { error: "Could not save event." };
   }
-  revalidatePath("/admin/events");
-  revalidatePath("/");
+  revalidatePath("/", "layout");
   redirect("/admin/events");
 }
 
@@ -119,8 +118,7 @@ export async function deleteEvent(fd: FormData): Promise<void> {
   const id = str(fd, "id");
   if (id) {
     await deleteEventAdmin(id);
-    revalidatePath("/admin/events");
-    revalidatePath("/");
+    revalidatePath("/", "layout");
   }
 }
 
@@ -140,8 +138,7 @@ export async function saveTier(fd: FormData): Promise<void> {
   };
   if (tierId) await updateTierAdmin(tierId, input);
   else if (eventId) await addTierAdmin(eventId, input);
-  revalidatePath(`/admin/events/${eventId}/edit`);
-  revalidatePath("/");
+  revalidatePath("/", "layout");
 }
 
 export async function deleteTier(fd: FormData): Promise<void> {
@@ -149,8 +146,7 @@ export async function deleteTier(fd: FormData): Promise<void> {
   const tierId = str(fd, "tier_id");
   const eventId = str(fd, "event_id");
   if (tierId) await deleteTierAdmin(tierId);
-  revalidatePath(`/admin/events/${eventId}/edit`);
-  revalidatePath("/");
+  revalidatePath("/", "layout");
 }
 
 // ============================================================
@@ -175,8 +171,7 @@ export async function addGallery(
     sort++;
   }
   
-  revalidatePath("/admin/gallery");
-  revalidatePath("/");
+  revalidatePath("/", "layout");
   return { ok: true };
 }
 
@@ -185,8 +180,7 @@ export async function updateGallery(fd: FormData): Promise<void> {
   const id = str(fd, "id");
   if (id) {
     await updateGalleryImageAdmin(id, nullable(fd, "caption"), intOrNull(str(fd, "sort")) ?? 0);
-    revalidatePath("/admin/gallery");
-    revalidatePath("/");
+    revalidatePath("/", "layout");
   }
 }
 
@@ -195,8 +189,7 @@ export async function deleteGallery(fd: FormData): Promise<void> {
   const id = str(fd, "id");
   if (id) {
     await deleteGalleryImageAdmin(id);
-    revalidatePath("/admin/gallery");
-    revalidatePath("/");
+    revalidatePath("/", "layout");
   }
 }
 
@@ -209,7 +202,7 @@ export async function toggleEnquiry(fd: FormData): Promise<void> {
   const handled = str(fd, "handled") === "true";
   if (id) {
     await setEnquiryHandledAdmin(id, handled);
-    revalidatePath("/admin/enquiries");
+    revalidatePath("/", "layout");
   }
 }
 
@@ -230,7 +223,7 @@ export async function createAdmin(
   if (await getUserByEmail(email)) return { error: "A user with that email already exists." };
   const hash = await bcrypt.hash(password, 10);
   await createUserAdmin(email, hash, role, name);
-  revalidatePath("/admin/settings");
+  revalidatePath("/", "layout");
   return { ok: true };
 }
 
@@ -242,7 +235,7 @@ export async function deleteTeamMember(fd: FormData): Promise<void> {
   if (id === session.user.id) return;
   if (str(fd, "role") === "owner" && (await countOwners()) <= 1) return;
   await deleteUserAdmin(id);
-  revalidatePath("/admin/settings");
+  revalidatePath("/", "layout");
 }
 
 export async function changeOwnPassword(
