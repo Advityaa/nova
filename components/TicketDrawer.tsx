@@ -1,18 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { type EventItem } from "@/lib/data";
-import { startCheckout } from "@/lib/checkout";
 import { useSite } from "./SiteProvider";
 
 export default function TicketDrawer() {
   const { drawerEvent, closeDrawer } = useSite();
   // Keep the last event mounted so the slide-out animation still shows content.
+  const router = useRouter();
   const [shown, setShown] = useState<EventItem | null>(null);
   const [cart, setCart] = useState<Record<number, number>>({});
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -20,7 +18,6 @@ export default function TicketDrawer() {
       setShown(drawerEvent);
       setCart({});
       setError("");
-      setBusy(false);
     }
   }, [drawerEvent]);
 
@@ -35,37 +32,21 @@ export default function TicketDrawer() {
   const count =
     ev?.tiers.reduce((sum, _t, i) => sum + (cart[i] || 0), 0) ?? 0;
 
-  async function checkout() {
+  function proceed() {
     if (!ev || count === 0) return;
-    if (!name.trim()) {
-      setError("Please enter your name.");
-      return;
-    }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email.trim())) {
-      setError("Please enter a valid email address.");
-      return;
-    }
-    const items = ev.tiers
-      .map((t, i) => ({ tierId: t.id ?? "", qty: cart[i] || 0 }))
-      .filter((x) => x.qty > 0 && x.tierId);
-    if (items.length === 0) {
+    
+    const params = new URLSearchParams();
+    Object.entries(cart).forEach(([i, qty]) => {
+      if (qty > 0) params.append(`t${i}`, qty.toString());
+    });
+
+    if (Array.from(params.keys()).length === 0) {
       setError("Tickets are not available right now.");
       return;
     }
-    setBusy(true);
-    setError("");
-    try {
-      await startCheckout({
-        eventSlug: ev.id,
-        items,
-        customer: { name: name.trim(), email: email.trim() || undefined },
-      });
-      // startCheckout redirects on success; nothing else to do.
-    } catch (e) {
-      setBusy(false);
-      setError(e instanceof Error ? e.message : "Checkout failed.");
-    }
+    
+    closeDrawer();
+    router.push(`/checkout/${ev.id}?${params.toString()}`);
   }
 
   return (
@@ -135,24 +116,6 @@ export default function TicketDrawer() {
           </div>
         </div>
         <div className="df">
-          {count > 0 && (
-            <div className="dcust">
-              <input
-                type="text"
-                placeholder="Full name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                autoComplete="name"
-              />
-              <input
-                type="email"
-                placeholder="Email (for your ticket)"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                autoComplete="email"
-              />
-            </div>
-          )}
           <div className="tot">
             <span className="tl">Total</span>
             <span className="tv">${total}</span>
@@ -160,16 +123,13 @@ export default function TicketDrawer() {
           {error && <div className="derror">{error}</div>}
           <button
             className="co"
-            onClick={checkout}
-            disabled={count === 0 || busy}
+            onClick={proceed}
+            disabled={count === 0}
           >
-            {busy
-              ? "Redirecting…"
-              : count === 0
-                ? "Select tickets"
-                : `Checkout · ${count} ${count === 1 ? "ticket" : "tickets"}`}
+            {count === 0
+              ? "Select tickets"
+              : `Proceed · ${count} ${count === 1 ? "ticket" : "tickets"}`}
           </button>
-          <div className="note">Secure payment · Mock mode (no real charge)</div>
         </div>
       </aside>
     </>

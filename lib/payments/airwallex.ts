@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import type {
   CallbackResult,
   CheckoutOrder,
@@ -84,9 +85,30 @@ export const airwallexProvider: PaymentProvider = {
   },
 
   async verifyCallback(req: Request): Promise<CallbackResult> {
-    // Airwallex sends webhooks (e.g. payment_intent.succeeded).
-    // The actual verification involves validating the webhook signature.
-    const body = await req.json();
+    const timestamp = req.headers.get("x-timestamp");
+    const signature = req.headers.get("x-signature");
+    const secret = process.env.AIRWALLEX_WEBHOOK_SECRET;
+
+    if (!timestamp || !signature) {
+      throw new Error("Missing Airwallex webhook signatures");
+    }
+    if (!secret) {
+      throw new Error("Missing AIRWALLEX_WEBHOOK_SECRET");
+    }
+
+    // We must read the raw body for signature verification
+    const rawBody = await req.text();
+    const expectedSig = crypto
+      .createHmac("sha256", secret)
+      .update(timestamp + rawBody)
+      .digest("hex");
+
+    if (signature !== expectedSig) {
+      console.error("Signature verification failed", { signature, expectedSig });
+      throw new Error("Invalid Airwallex webhook signature");
+    }
+
+    const body = JSON.parse(rawBody);
     const eventType = body.name;
     const intentId = body.data?.object?.id;
     const orderId = body.data?.object?.merchant_order_id;
