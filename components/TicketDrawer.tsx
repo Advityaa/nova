@@ -117,11 +117,14 @@ export default function TicketDrawer() {
         </div>
         <div className="df">
           <div className="tot">
-            <span className="tl">Total</span>
+            <span className="tl" style={{ display: "flex", flexDirection: "column" }}>
+              Total
+              <span style={{ fontSize: "10px", color: "var(--ink-dim)", fontWeight: "normal" }}>(inclusive of all taxes)</span>
+            </span>
             <span className="tv">CNY ¥{total}</span>
           </div>
           <div style={{ fontSize: '12px', color: 'var(--ink-dim)', marginBottom: '16px', textAlign: 'center' }}>
-            Prices in CNY and inclusive of all taxes. International cards will automatically convert to your local currency.
+            Prices in CNY. International cards will automatically convert to your local currency.
           </div>
           {error && <div className="derror">{error}</div>}
           <button

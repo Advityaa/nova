@@ -87,7 +87,7 @@ export default function CheckoutClient({ ev }: { ev: EventItem }) {
           })}
         </div>
         <div className="flex justify-between items-center pt-4 border-t border-[var(--line)] text-[var(--ink)] text-xl font-bold">
-          <span>Total (CNY)</span>
+          <span>Total (CNY) <span className="text-sm font-normal opacity-60">(inclusive of all taxes)</span></span>
           <span>¥{total}</span>
         </div>
       </div>
@@ -134,7 +134,7 @@ export default function CheckoutClient({ ev }: { ev: EventItem }) {
           {busy ? "Processing..." : `Checkout · CNY ¥${total}`}
         </button>
         <p className="text-center text-xs text-[var(--ink)]/40 mt-4 mb-2">Secure payment via Airwallex</p>
-        <p className="text-center text-xs text-[var(--ink)]/60">Prices are in CNY and inclusive of all taxes. If you are using an international card, your bank will automatically convert this to your local currency.</p>
+        <p className="text-center text-xs text-[var(--ink)]/60">Prices are in CNY. If you are using an international card, your bank will automatically convert this to your local currency.</p>
       </div>
     </div>
   );

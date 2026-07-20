@@ -86,7 +86,10 @@ export default function EventTickets({ event }: { event: EventItem }) {
         </div>
       )}
       <div className="tot" style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 16, fontFamily: "var(--mono)" }}>
-        <span className="tl">Total</span>
+        <span className="tl" style={{ display: "flex", flexDirection: "column" }}>
+          Total
+          <span style={{ fontSize: "10px", color: "var(--ink-dim)", fontFamily: "sans-serif" }}>(inclusive of all taxes)</span>
+        </span>
         <span className="tv">CNY ¥{total}</span>
       </div>
       {error && (
@@ -108,7 +111,7 @@ export default function EventTickets({ event }: { event: EventItem }) {
       </button>
       <div className="note" style={{ marginTop: 12, fontSize: '12px', color: 'var(--ink-dim)' }}>
         Secure payment via Airwallex<br/>
-        Prices in CNY and inclusive of all taxes. International cards are automatically converted to your local currency.
+        Prices in CNY. International cards are automatically converted to your local currency.
       </div>
     </div>
   );
