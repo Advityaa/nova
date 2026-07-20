@@ -1800,6 +1800,17 @@ footer {
   margin-bottom: 20px;
 }
 
+@media (max-width: 759px) {
+  .desktop-only {
+    display: none !important;
+  }
+}
+@media (min-width: 760px) {
+  .mobile-contact-btn {
+    display: none !important;
+  }
+}
+
 .social-panel .s-open {
   font-family: var(--mono);
   font-size: 13px;

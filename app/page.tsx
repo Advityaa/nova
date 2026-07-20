@@ -76,7 +76,7 @@ export default async function Home() {
 
       <Testimonials />
 
-      <ContactForm />
+      <ContactForm hideFormOnMobile={true} />
       <SocialSelector />
       <Footer />
 

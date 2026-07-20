@@ -15,7 +15,7 @@ const EVENT_TYPES = [
 
 // WaIcon removed
 
-export default function ContactForm() {
+export default function ContactForm({ hideFormOnMobile = false }: { hideFormOnMobile?: boolean }) {
   const [name, setName] = useState("");
   const [company, setCompany] = useState("");
   const [email, setEmail] = useState("");
@@ -78,7 +78,7 @@ export default function ContactForm() {
             </a>
           </div>
         </div>
-        <div className="cform">
+        <div className={`cform ${hideFormOnMobile ? "desktop-only" : ""}`}>
           <div>
             <label>Name</label>
             <input
@@ -112,7 +112,7 @@ export default function ContactForm() {
               onChange={(e) => setContact(e.target.value)}
             />
           </div>
-          <div>
+          <div className="full">
             <label>Event type</label>
             <select value={type} onChange={(e) => setType(e.target.value)}>
               {EVENT_TYPES.map((t) => (
@@ -144,6 +144,13 @@ export default function ContactForm() {
             </>
           )}
         </div>
+        {hideFormOnMobile && (
+          <div className="mobile-contact-btn" style={{ display: 'flex', justifyContent: 'center', marginTop: '-8px' }}>
+            <a href="/contact" style={{ display: 'inline-flex', background: 'var(--accent)', color: 'var(--accent-ink)', padding: '16px 32px', textDecoration: 'none', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', fontSize: '13px', borderRadius: '4px' }}>
+              Fill out Enquiry Form
+            </a>
+          </div>
+        )}
       </div>
     </section>
   );

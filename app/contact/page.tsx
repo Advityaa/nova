@@ -9,19 +9,16 @@ export default function ContactPage() {
     <SiteProvider events={[]} featuredId={null}>
       <Nav />
       <main style={{ paddingTop: '80px', minHeight: '80vh' }}>
-        <section className="sec" style={{ paddingTop: 0 }}>
+        <div style={{ paddingTop: 'clamp(20px, 4vw, 40px)', paddingBottom: 'clamp(20px, 4vw, 40px)', borderBottom: '1px solid var(--line)' }}>
           <div className="contact-address" style={{ 
             display: 'grid', 
             gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
             gap: '40px', 
-            marginTop: '0', 
-            paddingBottom: '60px', 
-            borderBottom: '1px solid var(--line)', 
             maxWidth: '1320px', 
             marginLeft: 'auto', 
             marginRight: 'auto',
-            paddingLeft: '20px',
-            paddingRight: '20px'
+            paddingLeft: 'clamp(18px, 4vw, 54px)',
+            paddingRight: 'clamp(18px, 4vw, 54px)'
           }}>
             <div>
               <h3 style={{ fontFamily: 'var(--disp)', fontSize: '24px', textTransform: 'uppercase', marginBottom: '16px', color: 'var(--ink)' }}>Business Details</h3>
@@ -46,11 +43,9 @@ export default function ContactPage() {
               </p>
             </div>
           </div>
-        </section>
-        
-        <div style={{ paddingTop: '40px' }}>
-          <ContactForm />
         </div>
+        
+        <ContactForm />
         <SocialSelector />
       </main>
       <Footer />
