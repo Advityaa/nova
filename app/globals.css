@@ -2454,9 +2454,7 @@ footer {
   padding-bottom: 40px;
 }
 .t-slider-wrapper {
-  overflow-x: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  overflow: hidden;
   padding-bottom: 20px;
 }
 .t-slider-wrapper::-webkit-scrollbar {
@@ -2465,10 +2463,15 @@ footer {
 .t-slider {
   display: flex;
   gap: 20px;
-  /* Align first item with the shell container max-width: 1320px + 24px padding */
-  padding: 0 max(24px, calc((100vw - 1320px) / 2));
-  scroll-snap-type: x mandatory;
   width: max-content;
+  animation: marquee 60s linear infinite;
+}
+.t-slider:hover {
+  animation-play-state: paused;
+}
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-50% - 10px)); }
 }
 .t-card {
   scroll-snap-align: start;
