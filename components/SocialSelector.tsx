@@ -79,15 +79,6 @@ export default function SocialSelector() {
                 Fastest way to reach the team for bookings, tickets and brand
                 enquiries. Message Nova directly.
               </p>
-              <div className="handle">+91 75320 99689</div>
-              <a
-                className="s-open wa"
-                href={WHATSAPP_LINK}
-                target="_blank"
-                rel="noopener"
-              >
-                <WaIcon /> Open WhatsApp
-              </a>
             </div>
           )}
 
@@ -95,15 +86,6 @@ export default function SocialSelector() {
             <div className="sp-content">
               <h3>Instagram</h3>
               <p>Recaps, teasers and the visual world of every Nova activation.</p>
-              <div className="handle">@{INSTAGRAM_HANDLE}</div>
-              <a
-                className="s-open ig"
-                href={INSTAGRAM_LINK}
-                target="_blank"
-                rel="noopener"
-              >
-                <IgIcon /> Open Instagram
-              </a>
             </div>
           )}
 
@@ -114,23 +96,40 @@ export default function SocialSelector() {
                 Join 20K+ followers and 150+ groups — the epicenter of the
                 community. Add Nova to get on the list.
               </p>
-              <div className="handle">ID: {WECHAT_ID}</div>
-              <button
-                className="s-open wc"
-                onClick={() =>
-                  alert(
-                    `WeChat ID: ${WECHAT_ID}\n\nScan the QR or search this ID in WeChat.`
-                  )
-                }
-              >
-                <WcIcon /> Show WeChat ID
-              </button>
             </div>
           )}
         </div>
-        <div className="social-qr">
+        <div className="social-qr flex flex-col items-center justify-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={QR[active]} alt={`${active} QR`} />
+          {active === "wa" && (
+            <div className="flex flex-col items-center">
+              <div className="font-mono text-[14px] text-[var(--accent)] tracking-wide mb-4 text-center">+91 75320 99689</div>
+              <a href={WHATSAPP_LINK} target="_blank" rel="noopener" className="block transition-transform hover:scale-105">
+                <img src={QR.wa} alt="WhatsApp QR" />
+              </a>
+            </div>
+          )}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          {active === "ig" && (
+            <div className="flex flex-col items-center">
+              <div className="font-mono text-[14px] text-[var(--accent)] tracking-wide mb-4 text-center">@{INSTAGRAM_HANDLE}</div>
+              <a href={INSTAGRAM_LINK} target="_blank" rel="noopener" className="block transition-transform hover:scale-105">
+                <img src={QR.ig} alt="Instagram QR" />
+              </a>
+            </div>
+          )}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          {active === "wc" && (
+            <div className="flex flex-col items-center">
+              <div className="font-mono text-[14px] text-[var(--accent)] tracking-wide mb-4 text-center">ID: {WECHAT_ID}</div>
+              <button 
+                onClick={() => alert(`WeChat ID: ${WECHAT_ID}\n\nScan the QR or search this ID in WeChat.`)}
+                className="block w-full border-none bg-transparent p-0 cursor-pointer transition-transform hover:scale-105"
+              >
+                <img src={QR.wc} alt="WeChat QR" />
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </section>
