@@ -57,7 +57,7 @@ export default function EventTickets({ event }: { event: EventItem }) {
               <div className="td">{t.d}</div>
             </div>
             <div className="tr">
-              <span className="tp">${t.p}</span>
+              <span className="tp">CNY ¥{t.p}</span>
               <div className="step">
                 <button onClick={() => step(i, -1)}>−</button>
                 <span className="q">{cart[i] || 0}</span>
@@ -87,7 +87,7 @@ export default function EventTickets({ event }: { event: EventItem }) {
       )}
       <div className="tot" style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 16, fontFamily: "var(--mono)" }}>
         <span className="tl">Total</span>
-        <span className="tv">${total}</span>
+        <span className="tv">CNY ¥{total}</span>
       </div>
       {error && (
         <div className="derror" style={{ marginBottom: 12 }}>
@@ -106,8 +106,9 @@ export default function EventTickets({ event }: { event: EventItem }) {
             ? "Select tickets"
             : `Checkout · ${count} ${count === 1 ? "ticket" : "tickets"}`}
       </button>
-      <div className="note" style={{ marginTop: 12 }}>
-        Secure payment · Mock mode (no real charge)
+      <div className="note" style={{ marginTop: 12, fontSize: '12px', color: 'var(--ink-dim)' }}>
+        Secure payment via Airwallex<br/>
+        Prices in CNY. International cards are automatically converted to your local currency.
       </div>
     </div>
   );

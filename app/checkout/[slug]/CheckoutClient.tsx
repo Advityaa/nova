@@ -78,16 +78,17 @@ export default function CheckoutClient({ ev }: { ev: EventItem }) {
               <div key={i} className="flex justify-between items-center text-[var(--ink)]">
                 <div>
                   <div className="font-medium">{t.n}</div>
-                  <div className="text-sm opacity-60">{qty} × ${t.p}</div>
+                  {t.d && <div className="text-xs opacity-80 mb-1">{t.d}</div>}
+                  <div className="text-sm opacity-60">{qty} × CNY ¥{t.p}</div>
                 </div>
-                <div className="font-semibold">${qty * t.p}</div>
+                <div className="font-semibold">CNY ¥{qty * t.p}</div>
               </div>
             );
           })}
         </div>
         <div className="flex justify-between items-center pt-4 border-t border-[var(--line)] text-[var(--ink)] text-xl font-bold">
-          <span>Total</span>
-          <span>${total}</span>
+          <span>Total (CNY)</span>
+          <span>¥{total}</span>
         </div>
       </div>
 
@@ -120,15 +121,20 @@ export default function CheckoutClient({ ev }: { ev: EventItem }) {
 
         {error && <div className="mt-4 p-3 bg-red-500/20 border border-red-500/50 rounded-lg text-red-200 text-sm">{error}</div>}
 
+        <p className="text-center text-xs text-[var(--ink)]/60 mt-8 mb-4">
+          By proceeding to payment, you agree to our <a href="/terms" target="_blank" rel="noopener" className="underline hover:text-[var(--ink)] transition-colors">Terms &amp; Conditions</a> and our <a href="/refunds" target="_blank" rel="noopener" className="underline hover:text-[var(--ink)] transition-colors">Refunds &amp; Cancellations Policy</a>.
+        </p>
+
         <button
           onClick={checkout}
           disabled={busy}
           className="w-full mt-8 bg-[var(--accent)] text-[var(--accent-ink)] font-bold py-4 rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50"
           style={{ backgroundColor: ev.color, color: ev.ink }}
         >
-          {busy ? "Processing..." : `Checkout · $${total}`}
+          {busy ? "Processing..." : `Checkout · CNY ¥${total}`}
         </button>
-        <p className="text-center text-xs text-[var(--ink)]/40 mt-4">Secure payment via Airwallex</p>
+        <p className="text-center text-xs text-[var(--ink)]/40 mt-4 mb-2">Secure payment via Airwallex</p>
+        <p className="text-center text-xs text-[var(--ink)]/60">Prices are in CNY. If you are using an international card, your bank will automatically convert this to your local currency.</p>
       </div>
     </div>
   );

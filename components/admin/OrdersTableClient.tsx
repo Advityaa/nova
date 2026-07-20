@@ -3,7 +3,7 @@
 import { useState } from "react";
 import type { AdminOrder } from "@/lib/db";
 
-const usd = (fen: number) => `$${(fen / 800).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+const cny = (fen: number) => `CNY ¥${(fen / 100).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
 export default function OrdersTableClient({ orders }: { orders: AdminOrder[] }) {
   const [search, setSearch] = useState("");
@@ -64,7 +64,7 @@ export default function OrdersTableClient({ orders }: { orders: AdminOrder[] }) 
               </span>
               <span>{o.event_name ?? "—"}</span>
               <span>{o.item_count}</span>
-              <span style={{ fontWeight: 500 }}>{usd(o.amount_fen)}</span>
+              <span style={{ fontWeight: 500 }}>{cny(o.amount_fen)}</span>
               <span>
                 <em className={`at-status s-${o.status}`} style={{ padding: "4px 8px", borderRadius: "12px", fontSize: "0.8rem", textTransform: "capitalize" }}>
                   {o.status}

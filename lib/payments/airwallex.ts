@@ -43,9 +43,8 @@ export const airwallexProvider: PaymentProvider = {
     const { token } = await authRes.json();
 
     // 2. Create Payment Intent
-    // amountFen is in fen (1/100 of RMB). But we are charging in USD.
-    // 800 fen = 1 USD. So amount in USD = amountFen / 800.
-    const amountUsd = Number((order.amountFen / 800).toFixed(2));
+    // amountFen is in fen (1/100 of RMB). Charge directly in CNY.
+    const amountCny = Number((order.amountFen / 100).toFixed(2));
 
     const piRes = await fetch(`${baseUrl}/api/v1/pa/payment_intents/create`, {
       method: "POST",
@@ -55,8 +54,8 @@ export const airwallexProvider: PaymentProvider = {
       },
       body: JSON.stringify({
         request_id: order.orderId,
-        amount: amountUsd,
-        currency: "USD",
+        amount: amountCny,
+        currency: "CNY",
         merchant_order_id: order.orderId,
         return_url: order.returnUrl,
         customer: {

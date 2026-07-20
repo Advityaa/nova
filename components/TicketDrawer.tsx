@@ -104,7 +104,7 @@ export default function TicketDrawer() {
                   <div className="td">{t.d}</div>
                 </div>
                 <div className="tr">
-                  <span className="tp">${t.p}</span>
+                  <span className="tp">CNY ¥{t.p}</span>
                   <div className="step">
                     <button onClick={() => step(i, -1)}>−</button>
                     <span className="q">{cart[i] || 0}</span>
@@ -118,7 +118,10 @@ export default function TicketDrawer() {
         <div className="df">
           <div className="tot">
             <span className="tl">Total</span>
-            <span className="tv">${total}</span>
+            <span className="tv">CNY ¥{total}</span>
+          </div>
+          <div style={{ fontSize: '12px', color: 'var(--ink-dim)', marginBottom: '16px', textAlign: 'center' }}>
+            Prices in CNY. International cards will automatically convert to your local currency.
           </div>
           {error && <div className="derror">{error}</div>}
           <button
