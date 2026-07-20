@@ -12,14 +12,14 @@ export default function TierEditor({
     <div className="tier-editor">
       <div className="admin-subhead">
         <h2>Ticket tiers</h2>
-        <span>Prices in $ (stored as fen). {tiers.length} tier(s).</span>
+        <span>Prices in CNY (stored as fen). {tiers.length} tier(s).</span>
       </div>
 
       <div className="tier-table">
         <div className="tier-head">
           <span>Name</span>
           <span>Description</span>
-          <span>Price $</span>
+          <span>Price ¥</span>
           <span>Cap</span>
           <span>Sold</span>
           <span>Sort</span>

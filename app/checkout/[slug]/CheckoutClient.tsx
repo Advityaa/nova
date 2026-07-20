@@ -134,7 +134,7 @@ export default function CheckoutClient({ ev }: { ev: EventItem }) {
           {busy ? "Processing..." : `Checkout · CNY ¥${total}`}
         </button>
         <p className="text-center text-xs text-[var(--ink)]/40 mt-4 mb-2">Secure payment via Airwallex</p>
-        <p className="text-center text-xs text-[var(--ink)]/60">Prices are in CNY. If you are using an international card, your bank will automatically convert this to your local currency.</p>
+        <p className="text-center text-xs text-[var(--ink)]/60">Prices are in CNY and inclusive of all taxes. If you are using an international card, your bank will automatically convert this to your local currency.</p>
       </div>
     </div>
   );

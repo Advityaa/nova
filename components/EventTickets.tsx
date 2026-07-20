@@ -108,7 +108,7 @@ export default function EventTickets({ event }: { event: EventItem }) {
       </button>
       <div className="note" style={{ marginTop: 12, fontSize: '12px', color: 'var(--ink-dim)' }}>
         Secure payment via Airwallex<br/>
-        Prices in CNY. International cards are automatically converted to your local currency.
+        Prices in CNY and inclusive of all taxes. International cards are automatically converted to your local currency.
       </div>
     </div>
   );
