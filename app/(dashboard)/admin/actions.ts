@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import bcrypt from "bcryptjs";
 import { auth } from "@/auth";
+import { toDirectImageUrl } from "@/lib/imageUrl";
 import {
   addGalleryImageAdmin,
   addTierAdmin,
@@ -82,7 +83,7 @@ function readEventInput(fd: FormData): EventInput {
     doors: nullable(fd, "doors"),
     status: str(fd, "status") || "draft",
     status_label: nullable(fd, "status_label"),
-    hero_image: nullable(fd, "hero_image"),
+    hero_image: toDirectImageUrl(nullable(fd, "hero_image")) || null,
     description: nullable(fd, "description"),
     featured: fd.get("featured") === "on" || fd.get("featured") === "true",
   };
@@ -164,7 +165,7 @@ export async function addGallery(
 
   if (!urlsText) return { error: "At least one Image URL is required." };
   
-  const urls = urlsText.split(/[\n,]+/).map(u => u.trim()).filter(Boolean);
+  const urls = urlsText.split(/[\n,]+/).map(u => toDirectImageUrl(u)).filter(Boolean);
   
   for (const url of urls) {
     await addGalleryImageAdmin(url, caption, sort, eventId);

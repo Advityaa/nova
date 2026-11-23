@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
+import { upload } from "@vercel/blob/client";
 import { addGallery, type FormState } from "@/app/(dashboard)/admin/actions";
 
 function Add() {
@@ -36,14 +37,13 @@ export default function AddGalleryForm({ nextSort, events }: { nextSort: number;
 
     for (const file of files) {
       try {
-        const res = await fetch(`/api/upload?filename=${encodeURIComponent(file.name)}`, {
-          method: "POST",
-          body: file,
+        const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+        const blob = await upload(`gallery/${safeName}`, file, {
+          access: "public",
+          handleUploadUrl: "/api/upload",
+          contentType: file.type,
         });
-        if (res.ok) {
-          const blob = await res.json();
-          newUrls.push(blob.url);
-        }
+        newUrls.push(blob.url);
       } catch (err) {
         console.error("Upload failed for", file.name, err);
       }

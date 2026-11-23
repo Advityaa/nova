@@ -1,6 +1,7 @@
 import AddGalleryForm from "@/components/admin/AddGalleryForm";
 import { listGalleryAdmin, listEventsAdmin, type AdminGalleryImage } from "@/lib/db";
 import { deleteGallery, updateGallery } from "../actions";
+import { toDirectImageUrl } from "@/lib/imageUrl";
 
 export const dynamic = "force-dynamic";
 
@@ -45,7 +46,7 @@ export default async function AdminGalleryPage() {
                 {folderImages.map((img) => (
                   <div className="gadmin-item" key={img.id}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={img.url} alt={img.caption ?? "Gallery"} />
+                    <img src={toDirectImageUrl(img.url)} alt={img.caption ?? "Gallery"} />
                     <form action={updateGallery} className="gadmin-meta">
                       <input type="hidden" name="id" value={img.id} />
                       <input name="caption" defaultValue={img.caption ?? ""} placeholder="Caption" />

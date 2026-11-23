@@ -2,6 +2,7 @@ import "server-only";
 import { randomUUID } from "node:crypto";
 import { neon, type NeonQueryFunction } from "@neondatabase/serverless";
 import type { EventItem, Tier } from "./data";
+import { toDirectImageUrl } from "./imageUrl";
 
 // ---- Neon connection (lazy) ----
 // Neon's Vercel Marketplace integration sets DATABASE_URL. We also accept the
@@ -109,7 +110,7 @@ function mapEvent(row: EventRow, tiers: TierRow[]): EventItem {
     venue: row.venue ?? "",
     area: row.area ?? "",
     address: row.address ?? undefined,
-    img: row.hero_image ?? "",
+    img: toDirectImageUrl(row.hero_image),
     status: row.status_label ?? "",
     desc: row.description ?? "",
     tiers: tiers
@@ -172,7 +173,7 @@ export async function getGalleryImages(): Promise<string[]> {
   const { rows } = await sql<{ url: string }>`
     select url from gallery_images order by sort asc, created_at asc
   `;
-  return rows.map((r) => r.url);
+  return rows.map((r) => toDirectImageUrl(r.url));
 }
 
 // ----- Enquiries -----

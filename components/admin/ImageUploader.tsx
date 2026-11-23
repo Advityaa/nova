@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import { upload } from "@vercel/blob/client";
+import { toDirectImageUrl } from "@/lib/imageUrl";
 
 export default function ImageUploader({
   name,
@@ -44,11 +45,11 @@ export default function ImageUploader({
 
   return (
     <div className="image-uploader">
-      <input type="hidden" name={name} value={url} />
+      <input type="hidden" name={name} value={toDirectImageUrl(url)} />
       
       {url && (
         <div className="image-uploader-preview" style={{ marginBottom: "0.5rem" }}>
-          <img src={url} alt="Preview" style={{ maxHeight: "150px", borderRadius: "4px" }} />
+          <img src={toDirectImageUrl(url)} alt="Preview" style={{ maxHeight: "150px", borderRadius: "4px" }} />
         </div>
       )}
 
