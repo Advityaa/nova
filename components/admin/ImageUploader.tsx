@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import { upload } from "@vercel/blob/client";
 
 export default function ImageUploader({
   name,
@@ -22,19 +23,16 @@ export default function ImageUploader({
     setError("");
 
     try {
-      const res = await fetch(`/api/upload?filename=${encodeURIComponent(file.name)}`, {
-        method: "POST",
-        body: file,
+      // Upload directly from the browser to Vercel Blob (no 4.5 MB limit).
+      const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+      const blob = await upload(`events/${safeName}`, file, {
+        access: "public",
+        handleUploadUrl: "/api/upload",
+        contentType: file.type,
       });
-
-      if (!res.ok) {
-        throw new Error("Upload failed");
-      }
-
-      const blob = await res.json();
       setUrl(blob.url);
     } catch (err: any) {
-      setError(err.message || "Failed to upload image.");
+      setError(`Upload failed: ${err?.message || "unknown error"}`);
     } finally {
       setUploading(false);
       // Reset input so the same file can be selected again if needed
